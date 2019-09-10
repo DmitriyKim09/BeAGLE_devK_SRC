@@ -1,0 +1,2 @@
+setenv BEAGLESYS /afs/rhic.bnl.gov/eic/gitstore/BeAGLE
+echo "BEAGLESYS is " $BEAGLESYS
