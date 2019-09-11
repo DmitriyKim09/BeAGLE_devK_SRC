@@ -5260,9 +5260,9 @@ C            ENDIF
         WRITE(*,*) "TEST LOCATION AGAIN Y ~ ", VHKK(1,K1+1)
         WRITE(*,*) "TEST LOCATION AGAIN Z ~ ", VHKK(1,K1+1)
 
-        WRITE(*,*) "TEST LOCATION 2 AGAIN X ~ ", VHKK(2,K1+1)
-        WRITE(*,*) "TEST LOCATION 2 AGAIN Y ~ ", VHKK(2,K1+1)
-        WRITE(*,*) "TEST LOCATION 2 AGAIN Z ~ ", VHKK(2,K1+1)
+        WRITE(*,*) "TEST LOCATION 2 AGAIN X ~ ", VHKK(2,K2+1)
+        WRITE(*,*) "TEST LOCATION 2 AGAIN Y ~ ", VHKK(2,K2+1)
+        WRITE(*,*) "TEST LOCATION 2 AGAIN Z ~ ", VHKK(2,K2+1)
 
       ENDIF
     
@@ -17822,7 +17822,7 @@ C Anything between Fe and Pb will be Pb n(k), similar for other nucleus.
         E0 = 0.0D0
         F0 = 0.0D0  
       ELSE 
-        WRITE(*,*) "Should not be called here.ERROR!ANUCLEUS=",ANUCLEUS
+        WRITE(*,*) "Should not be called here.ERROR2!ANUCLEUS=",ANUCLEUS
       ENDIF 
 
 C     Random number generation between 0 and 1     
@@ -17980,10 +17980,10 @@ C     Overwrite KRANGE for He3 and He4
         C2 = 0.0D0 
         NN = 1.0D0
         E = C
-      ELSE IF( ANUCLEUS .EQ. 2 ) THEN
-C       DO NOTHING  
-      ELSE
-        WRITE(*,*) "Should not be called here.ERROR!ANUCLEUS=",ANUCLEUS
+C       ELSE IF( ANUCLEUS .EQ. 2 ) THEN
+C C       DO NOTHING  
+C       ELSE
+C         WRITE(*,*) "Should not be called here.ERROR1!ANUCLEUS=",ANUCLEUS
       ENDIF 
 
 
