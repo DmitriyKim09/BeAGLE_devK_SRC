@@ -5075,10 +5075,10 @@ C            ENDIF
      &                EBINDP(2),EBINDN(2),EPOT(2,210),
      &                ETACOU(2),ICOUL,LFERMI      
       
-* for now only A > 12 assign SRC pairs and bring them half way
-* closer without changing the center of mass position.
+C     for now only A > 12 assign SRC pairs and bring them half way
+C     closer without changing the center of mass position.
       
-* Initialize SRC_PARTNER_INDEX = -1
+C     Initialize SRC_PARTNER_INDEX = -1
 
       SRC_PARTNER_INDEX = -1
 
@@ -5095,8 +5095,8 @@ C            ENDIF
         D00 = DT_RNDM(D00)
         IF( D00 .LE. 0.2D0 ) THEN ! now hard-coded 20% SRC nucleons probability
           
-* find the nearest neighbor and record its index number K2 with 5 times
-* more probability of finding pn pair than pp/nn pair, using B00 random number. 
+C     find the nearest neighbor and record its index number K2 with 5 times
+C     more probability of finding pn pair than pp/nn pair, using B00 random number. 
 
           K1 = IIMAIN
           B00 = DT_RNDM(B00)
@@ -5227,9 +5227,9 @@ C       start to bring them together at a distance of ~ 1/n(k) fm
 
       ENDIF  
 
-* for Deuteron only, if IFMDIST .GE. 1, bring them closer 
-* at a distance ~ 1/n(k) without changing momentum. IFMDIST = 1 
-* already samples high momentum for deuteron.
+C     for Deuteron only, if IFMDIST .GE. 1, bring them closer 
+C     at a distance ~ 1/n(k) without changing momentum. IFMDIST = 1 
+C     already samples high momentum for deuteron.
 
       IF( (NMASS .EQ. 2) .AND. (IFMDIST .GE. 1) ) THEN
         K1 = 1
