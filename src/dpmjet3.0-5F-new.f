@@ -5238,8 +5238,7 @@ C            ENDIF
         Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
 
         P00 = SQRT(PHKK(1,K1+1)**2+PHKK(2,K1+1)**2+PHKK(3,K1+1)**2)
-C         MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
-        MOVE = DIST_VALUE/2.0D0
+        MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
 
         WRITE(*,*) "TEST LOCATION X ~ ", VHKK(1,K1+1)
         WRITE(*,*) "TEST LOCATION Y ~ ", VHKK(2,K1+1)
@@ -5249,6 +5248,8 @@ C         MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
         WRITE(*,*) "TEST LOCATION 2 Y ~ ", VHKK(2,K2+1)
         WRITE(*,*) "TEST LOCATION 2 Z ~ ", VHKK(3,K2+1)
 
+        WRITE(*,*) "Check distance 1st ~ ", DIST_VALUE
+
         VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
         VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
         VHKK(3,K1+1) = VHKK(3,K1+1) - MOVE*Z_SPACE
@@ -5257,13 +5258,24 @@ C         MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
         VHKK(2,K2+1) = VHKK(2,K2+1) + MOVE*Y_SPACE
         VHKK(3,K2+1) = VHKK(3,K2+1) + MOVE*Z_SPACE
 
-        WRITE(*,*) "TEST LOCATION AGAIN X ~ ", VHKK(1,K1+1)
-        WRITE(*,*) "TEST LOCATION AGAIN Y ~ ", VHKK(2,K1+1)
-        WRITE(*,*) "TEST LOCATION AGAIN Z ~ ", VHKK(3,K1+1)
+        DIST1 = (VHKK(1,K1+1)-VHKK(1,K2+1))**2
+        DIST2 = (VHKK(2,K1+1)-VHKK(2,K2+1))**2
+        DIST3 = (VHKK(3,K1+1)-VHKK(3,K2+1))**2
+        DIST_3D = DIST1+DIST2+DIST3
+        DIST_VALUE = SQRT(DIST_3D)
 
-        WRITE(*,*) "TEST LOCATION 2 AGAIN X ~ ", VHKK(1,K2+1)
-        WRITE(*,*) "TEST LOCATION 2 AGAIN Y ~ ", VHKK(2,K2+1)
-        WRITE(*,*) "TEST LOCATION 2 AGAIN Z ~ ", VHKK(3,K2+1)
+C     if the radius of deuteron > 2 fm, then revert it back 
+        IF( DIST_VALUE .GT. 4 ) THEN
+          VHKK(1,K1+1) = VHKK(1,K1+1) + MOVE*X_SPACE
+          VHKK(2,K1+1) = VHKK(2,K1+1) + MOVE*Y_SPACE
+          VHKK(3,K1+1) = VHKK(3,K1+1) + MOVE*Z_SPACE
+
+          VHKK(1,K2+1) = VHKK(1,K2+1) - MOVE*X_SPACE
+          VHKK(2,K2+1) = VHKK(2,K2+1) - MOVE*Y_SPACE
+          VHKK(3,K2+1) = VHKK(3,K2+1) - MOVE*Z_SPACE
+        ENDIF
+
+        WRITE(*,*) "Check distance 2nd ~ ", DIST_VALUE
 
       ENDIF
     
