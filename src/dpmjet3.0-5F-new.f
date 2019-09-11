@@ -5107,15 +5107,15 @@ C            ENDIF
           ENDIF  
           DO J=2,NMASS+1
             IF( J .EQ. K1 ) THEN 
-              WRITE(*,*) 'SAME NUCLEON! '
+C               WRITE(*,*) 'SAME NUCLEON! '
               CONTINUE
             ENDIF
             IF((IS_PN.EQ.1).AND.(PHKK(5,K1).NE.PHKK(5,J))) THEN
-              WRITE(*,*) 'PN pair is required, continue looking '
+C               WRITE(*,*) 'PN pair is required, continue looking '
               CONTINUE
             ENDIF
             IF((IS_PN.EQ.0).AND.(PHKK(5,K1).EQ.PHKK(5,J))) THEN
-              WRITE(*,*) 'PN pair is not required, continue looking '
+C               WRITE(*,*) 'PN pair is not required, continue looking '
               CONTINUE  
             ENDIF
           
@@ -5129,17 +5129,17 @@ C            ENDIF
             ENDIF
           ENDDO
 
-          WRITE(*,*) 'SRC partner nucleon: ', K2
-          WRITE(*,*) 'SRC partner nucleon distance ~ ', SQRT(C00)
-          WRITE(*,*) 'px: ', PHKK(1,K2)
-          WRITE(*,*) 'py: ', PHKK(2,K2)
-          WRITE(*,*) 'pz: ', PHKK(3,K2)
-          WRITE(*,*) 'mass: ', PHKK(5,K2)
+C           WRITE(*,*) 'SRC partner nucleon: ', K2
+C           WRITE(*,*) 'SRC partner nucleon distance ~ ', SQRT(C00)
+C           WRITE(*,*) 'px: ', PHKK(1,K2)
+C           WRITE(*,*) 'py: ', PHKK(2,K2)
+C           WRITE(*,*) 'pz: ', PHKK(3,K2)
+C           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           CALL DT_KFERMI(P00,NMASS,IFMDIST) !re-sample momentum using deuteron high momentum tail
           P00=P00*(PFERMP(2)+PFERMN(2))/2.0D0
-          WRITE(*,*) 'Fermi momentum P00 ', P00
-          WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
+C           WRITE(*,*) 'Fermi momentum P00 ', P00
+C           WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
           CALL DT_DPOLI(POLC,POLS)
           CALL DT_DSFECF(SFE,CFE)
           CXTA = POLS*CFE
@@ -5172,17 +5172,17 @@ C            ENDIF
                USER3 = P00
           ENDIF
 
-          WRITE(*,*) 'SRC main nucleon after modification: ', K1
-          WRITE(*,*) 'px: ', PHKK(1,K1)
-          WRITE(*,*) 'py: ', PHKK(2,K1)
-          WRITE(*,*) 'pz: ', PHKK(3,K1)
-          WRITE(*,*) 'mass: ', PHKK(5,K1)
+C           WRITE(*,*) 'SRC main nucleon after modification: ', K1
+C           WRITE(*,*) 'px: ', PHKK(1,K1)
+C           WRITE(*,*) 'py: ', PHKK(2,K1)
+C           WRITE(*,*) 'pz: ', PHKK(3,K1)
+C           WRITE(*,*) 'mass: ', PHKK(5,K1)
 
-          WRITE(*,*) 'SRC partner nucleon after modification: ', K2
-          WRITE(*,*) 'px: ', PHKK(1,K2)
-          WRITE(*,*) 'py: ', PHKK(2,K2)
-          WRITE(*,*) 'pz: ', PHKK(3,K2)
-          WRITE(*,*) 'mass: ', PHKK(5,K2)
+C           WRITE(*,*) 'SRC partner nucleon after modification: ', K2
+C           WRITE(*,*) 'px: ', PHKK(1,K2)
+C           WRITE(*,*) 'py: ', PHKK(2,K2)
+C           WRITE(*,*) 'pz: ', PHKK(3,K2)
+C           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           SRC_PARTNER_INDEX = int(K2)
 
@@ -5215,16 +5215,6 @@ C       start to bring them together at a distance of ~ 1/n(k) fm
             MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-12)/2D0
           ENDIF
 
-          WRITE(*,*) "TEST LOCATION X ~ ", VHKK(1,K1)
-          WRITE(*,*) "TEST LOCATION Y ~ ", VHKK(2,K1)
-          WRITE(*,*) "TEST LOCATION Z ~ ", VHKK(3,K1)
-
-          WRITE(*,*) "TEST LOCATION 2 X ~ ", VHKK(1,K2)
-          WRITE(*,*) "TEST LOCATION 2 Y ~ ", VHKK(2,K2)
-          WRITE(*,*) "TEST LOCATION 2 Z ~ ", VHKK(3,K2)
-
-          WRITE(*,*) "Check distance 1st ~ ", DIST_VALUE
-
           VHKK(1,K1) = VHKK(1,K1) - MOVE*X_SPACE
           VHKK(2,K1) = VHKK(2,K1) - MOVE*Y_SPACE
           VHKK(3,K1) = VHKK(3,K1) - MOVE*Z_SPACE
@@ -5232,17 +5222,6 @@ C       start to bring them together at a distance of ~ 1/n(k) fm
           VHKK(1,K2) = VHKK(1,K2) + MOVE*X_SPACE
           VHKK(2,K2) = VHKK(2,K2) + MOVE*Y_SPACE
           VHKK(3,K2) = VHKK(3,K2) + MOVE*Z_SPACE
-
-          DIST1 = (VHKK(1,K1)-VHKK(1,K2))**2
-          DIST2 = (VHKK(2,K1)-VHKK(2,K2))**2
-          DIST3 = (VHKK(3,K1)-VHKK(3,K2))**2
-          DIST_3D = DIST1+DIST2+DIST3
-          DIST_VALUE = SQRT(DIST_3D)
-
-          IF( MOVE .NE. 0.0D0 ) THEN
-            WRITE(*,*) "Check distance 2nd ~ ", DIST_VALUE
-          ENDIF 
-
 
         ENDIF
 
