@@ -17980,10 +17980,10 @@ C     Overwrite KRANGE for He3 and He4
         C2 = 0.0D0 
         NN = 1.0D0
         E = C
-      ELSE IF( ANUCLEUS .EQ. 2 )
+      ELSE IF( ANUCLEUS .EQ. 2 ) THEN
 C       DO NOTHING  
       ELSE
-        WRITE(*,*) "Should not be called here. ERROR! ANUCLEUS = ",ANUCLEUS
+        WRITE(*,*) "Should not be called here.ERROR!ANUCLEUS=",ANUCLEUS
       ENDIF 
 
 
