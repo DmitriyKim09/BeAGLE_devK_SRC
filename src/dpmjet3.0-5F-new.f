@@ -5136,7 +5136,7 @@ C            ENDIF
           WRITE(*,*) 'pz: ', PHKK(3,K2)
           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
-          CALL DT_KFERMI(P00,IFMDIST) !re-sample momentum using deuteron high momentum tail
+          CALL DT_KFERMI(P00,NMASS,IFMDIST) !re-sample momentum using deuteron high momentum tail
           P00=P00*FERMOD
           WRITE(*,*) 'Fermi momentum P00 ', P00
           WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
@@ -5305,7 +5305,7 @@ C            ENDIF
          ! different k momentum distributions
 
          IF ( (NMASS.EQ.2) .AND. (IFMDIST.GE.1) ) THEN
-            CALL DT_KFERMI(PABS,IFMDIST)
+            CALL DT_KFERMI(PABS,NMASS,IFMDIST)
          ELSE
             CALL DT_DFERMI(PABS,NMASS)
          ENDIF
@@ -17751,7 +17751,9 @@ C       GOTO 20
 ************************************************************************
 * Use n(k) in Claudio Ciofi & S. Simula, PRC VOLUME 53, NUMBER 4, 1996.                                *
 ************************************************************************
-      
+
+C Anything between Fe and Pb will be Pb n(k), similar for other nucleus.
+
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
       
@@ -17760,8 +17762,14 @@ C       GOTO 20
       DOUBLE PRECISION CDFT(1:10000)
 
       PARAMETER (PI=3.14159265359D+00)
-
-      IF( (ANUCLEUS .LE. 208) .OR. (ANUCLEUS .GT. 56) ) THEN
+      IF( ANUCLEUS .GT. 208 ) THEN
+        A0 = 1.08D0
+        B0 = 0.118D0
+        C0 = 0.0D0
+        D0 = 0.0D0
+        E0 = 0.0D0
+        F0 = 0.0D0
+      ELSE IF( (ANUCLEUS .LE. 208) .OR. (ANUCLEUS .GT. 56) ) THEN 
         A0 = 1.80D0
         B0 = 4.77D0
         C0 = 0.0D0
@@ -17792,17 +17800,12 @@ C       GOTO 20
       ELSE IF( (ANUCLEUS .LE. 12) .OR. (ANUCLEUS .GT. 4)  ) THEN
         A0 = 2.61D0
         B0 = 2.66D0
-        C0 = 3.54D0
+        C0 = 0.0D0
         D0 = 0.0D0
         E0 = 0.0D0
         F0 = 0.0D0  
       ELSE 
-        A0 = 1.80D0
-        B0 = 4.77D0
-        C0 = 0.0D0
-        D0 = 25.5D0
-        E0 = 0.0D0
-        F0 = 40.3D0
+        WRITE(*,*)'Deuteron, He3, and He4 should not be called here. ERROR! ANUCLEUS = ', ANUCLEUS
       ENDIF 
 
 C     Random number generation between 0 and 1     
@@ -17860,11 +17863,12 @@ C     Random number generation between 0 and 1
 *
 *===Added by KONG TU for realistic intrinsic k momentum distribution===*
 *
-      SUBROUTINE DT_KFERMI(GGPART,KRANGE)
+      SUBROUTINE DT_KFERMI(GGPART,ANUCLEUS,KRANGE)
 
-************************************************************************
-* Sample realistic momentum k distribution in A = 2 (Deuteron)         *       
-************************************************************************
+****************************************************************************
+* Sample realistic momentum k distribution in A = 2-4 (Deuteron to Helium4)*
+* These are n0k parametrization not including n1k                          *        
+****************************************************************************
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
@@ -17932,6 +17936,36 @@ C     NN is normalization to unity.
       ELSE 
         E = C
       ENDIF
+
+      IF( ANUCLEUS .EQ. 3 ) THEN
+        A0 = 31.7D0
+        B0 = 1.32D0
+        C0 = 5.98D0
+        A1 = 0.00266D0
+        B1 = 0.365D0
+        C1 = 0.0D0
+        A2 = 0.0D0
+        B2 = 0.0D0
+        C2 = 0.0D0 
+        NN = 1.0D0
+        E = C
+      ELSE IF( ANUCLEUS .EQ. 4 ) THEN
+        A0 = 4.33D0
+        B0 = 1.54D0
+        C0 = 0.419D0
+        A1 = 5.49D0
+        B1 = 4.90D0
+        C1 = 0.0D0
+        A2 = 0.0D0
+        B2 = 0.0D0
+        C2 = 0.0D0 
+        NN = 1.0D0
+        E = C
+      ELSE 
+        WRITE(*,*)'A > Deuteron, He3, and He4 should not be called here. ERROR! ANUCLEUS = ', ANUCLEUS
+      ENDIF 
+
+
 
 !First, calculate the normalization:
 
