@@ -17805,7 +17805,7 @@ C Anything between Fe and Pb will be Pb n(k), similar for other nucleus.
         E0 = 0.0D0
         F0 = 0.0D0  
       ELSE 
-        WRITE(*,*) 'Deuteron, He3, and He4 should not be called here. ERROR! ANUCLEUS = ', ANUCLEUS
+        WRITE(*,*) "Deuteron, He3, and He4 should not be called here. ERROR! ANUCLEUS = ", ANUCLEUS
       ENDIF 
 
 C     Random number generation between 0 and 1     
@@ -17962,7 +17962,7 @@ C     NN is normalization to unity.
         NN = 1.0D0
         E = C
       ELSE 
-        WRITE(*,*) 'A > Deuteron, He3, and He4 should not be called here. ERROR! ANUCLEUS = ', ANUCLEUS
+        WRITE(*,*) "A > Deuteron, He3, and He4 should not be called here. ERROR! ANUCLEUS = ", ANUCLEUS
       ENDIF 
 
 
