@@ -5304,7 +5304,7 @@ C            ENDIF
          ! Use IFMDIST, 3rd varaible in control card of FERMI, to switch between
          ! different k momentum distributions
 
-         IF ( ((NMASS.GE.2) .AND. (NMASS.LE.4) ) .AND. (IFMDIST.GE.1) ) THEN
+         IF ( (NMASS.GE.2) .AND. (NMASS.LE.4) .AND. (IFMDIST.GE.1) ) THEN
             CALL DT_KFERMI(PABS,NMASS,IFMDIST)
          ELSE
             CALL DT_DFERMI(PABS,NMASS)
