@@ -5257,12 +5257,12 @@ C            ENDIF
         VHKK(3,K2+1) = VHKK(3,K2+1) + MOVE*Z_SPACE
 
         WRITE(*,*) "TEST LOCATION AGAIN X ~ ", VHKK(1,K1+1)
-        WRITE(*,*) "TEST LOCATION AGAIN Y ~ ", VHKK(1,K1+1)
-        WRITE(*,*) "TEST LOCATION AGAIN Z ~ ", VHKK(1,K1+1)
+        WRITE(*,*) "TEST LOCATION AGAIN Y ~ ", VHKK(2,K1+1)
+        WRITE(*,*) "TEST LOCATION AGAIN Z ~ ", VHKK(3,K1+1)
 
-        WRITE(*,*) "TEST LOCATION 2 AGAIN X ~ ", VHKK(2,K2+1)
+        WRITE(*,*) "TEST LOCATION 2 AGAIN X ~ ", VHKK(1,K2+1)
         WRITE(*,*) "TEST LOCATION 2 AGAIN Y ~ ", VHKK(2,K2+1)
-        WRITE(*,*) "TEST LOCATION 2 AGAIN Z ~ ", VHKK(2,K2+1)
+        WRITE(*,*) "TEST LOCATION 2 AGAIN Z ~ ", VHKK(3,K2+1)
 
       ENDIF
     
