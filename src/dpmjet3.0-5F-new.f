@@ -5238,12 +5238,13 @@ C            ENDIF
         Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
 
         P00 = SQRT(PHKK(1,K1+1)**2+PHKK(2,K1+1)**2+PHKK(3,K1+1)**2)
-        IF( P00 .LT. 0.5D0 ) THEN
+        
+        IF( P00 .LT. 0.25D0 ) THEN
           MOVE = 0.0D0
         ELSE
           MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-12)/2D0
         ENDIF
-        
+
         WRITE(*,*) "TEST LOCATION X ~ ", VHKK(1,K1+1)
         WRITE(*,*) "TEST LOCATION Y ~ ", VHKK(2,K1+1)
         WRITE(*,*) "TEST LOCATION Z ~ ", VHKK(3,K1+1)
@@ -5268,8 +5269,10 @@ C            ENDIF
         DIST_3D = DIST1+DIST2+DIST3
         DIST_VALUE = SQRT(DIST_3D)
 
-        WRITE(*,*) "Check distance 2nd ~ ", DIST_VALUE
-
+        IF( MOVE .NE. 0.0D0 ) THEN
+          WRITE(*,*) "Check distance 2nd ~ ", DIST_VALUE
+        ENDIF  
+        
       ENDIF
     
       RETURN
