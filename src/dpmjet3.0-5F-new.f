@@ -5110,11 +5110,11 @@ C            ENDIF
               WRITE(*,*) 'SAME NUCLEON! '
               CONTINUE
             ENDIF
-            IF((IS_PN.EQ.1).AND.(PHKK(5,K1).EQ.PHKK(5,J))) THEN
+            IF((IS_PN.EQ.1).AND.(PHKK(5,K1).NE.PHKK(5,J))) THEN
               WRITE(*,*) 'PN pair is required, continue looking '
               CONTINUE
             ENDIF
-            IF((IS_PN.EQ.0).AND.(PHKK(5,K1).NE.PHKK(5,J))) THEN
+            IF((IS_PN.EQ.0).AND.(PHKK(5,K1).EQ.PHKK(5,J))) THEN
               WRITE(*,*) 'PN pair is not required, continue looking '
               CONTINUE  
             ENDIF
