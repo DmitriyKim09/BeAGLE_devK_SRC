@@ -5241,6 +5241,12 @@ C            ENDIF
         MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
 
         WRITE(*,*) "TEST LOCATION X ~ ", VHKK(1,K1+1)
+        WRITE(*,*) "TEST LOCATION Y ~ ", VHKK(2,K1+1)
+        WRITE(*,*) "TEST LOCATION Z ~ ", VHKK(3,K1+1)
+
+        WRITE(*,*) "TEST LOCATION 2 X ~ ", VHKK(1,K2+1)
+        WRITE(*,*) "TEST LOCATION 2 Y ~ ", VHKK(2,K2+1)
+        WRITE(*,*) "TEST LOCATION 2 Z ~ ", VHKK(3,K2+1)
 
         VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
         VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
@@ -5251,6 +5257,12 @@ C            ENDIF
         VHKK(3,K2+1) = VHKK(3,K2+1) + MOVE*Z_SPACE
 
         WRITE(*,*) "TEST LOCATION AGAIN X ~ ", VHKK(1,K1+1)
+        WRITE(*,*) "TEST LOCATION AGAIN Y ~ ", VHKK(1,K1+1)
+        WRITE(*,*) "TEST LOCATION AGAIN Z ~ ", VHKK(1,K1+1)
+
+        WRITE(*,*) "TEST LOCATION 2 AGAIN X ~ ", VHKK(2,K1+1)
+        WRITE(*,*) "TEST LOCATION 2 AGAIN Y ~ ", VHKK(2,K1+1)
+        WRITE(*,*) "TEST LOCATION 2 AGAIN Z ~ ", VHKK(2,K1+1)
 
       ENDIF
     
@@ -17942,6 +17954,8 @@ C     NN is normalization to unity.
         E = C
       ENDIF
 
+C     Overwrite KRANGE for He3 and He4
+
       IF( ANUCLEUS .EQ. 3 ) THEN
         A0 = 31.7D0
         B0 = 1.32D0
@@ -17966,7 +17980,9 @@ C     NN is normalization to unity.
         C2 = 0.0D0 
         NN = 1.0D0
         E = C
-      ELSE 
+      ELSE IF( ANUCLEUS .EQ. 2 )
+C       DO NOTHING  
+      ELSE
         WRITE(*,*) "Should not be called here. ERROR! ANUCLEUS = ",ANUCLEUS
       ENDIF 
 
