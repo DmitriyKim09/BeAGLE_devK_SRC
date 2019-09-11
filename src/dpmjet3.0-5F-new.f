@@ -5146,14 +5146,14 @@ C            ENDIF
           CYTA = POLS*SFE
           CZTA = POLC
 
-          MAIN_PX = (PHKK(1,K1) + CXTA*P00
-          MAIN_PY = (PHKK(2,K1) + CYTA*P00
-          MAIN_PZ = (PHKK(3,K1) + CZTA*P00
+          MAIN_PX = PHKK(1,K1) + CXTA*P00
+          MAIN_PY = PHKK(2,K1) + CYTA*P00
+          MAIN_PZ = PHKK(3,K1) + CZTA*P00
           MAIN_E  = SQRT(MAIN_PX**2+MAIN_PY**2+MAIN_PZ**2+PHKK(5,K1)**2)
           
-          PAIR_PX = (PHKK(1,K2) - CXTA*P00
-          PAIR_PY = (PHKK(2,K2) - CYTA*P00
-          PAIR_PZ = (PHKK(3,K2) - CZTA*P00
+          PAIR_PX = PHKK(1,K2) - CXTA*P00
+          PAIR_PY = PHKK(2,K2) - CYTA*P00
+          PAIR_PZ = PHKK(3,K2) - CZTA*P00
           PAIR_E  = SQRT(PAIR_PX**2+PAIR_PY**2+PAIR_PZ**2+PHKK(5,K2)**2)
 
           PHKK(4,K1) = MAIN_E
