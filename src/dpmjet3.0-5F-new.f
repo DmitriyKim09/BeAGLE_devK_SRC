@@ -5238,7 +5238,8 @@ C            ENDIF
         Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
 
         P00 = SQRT(PHKK(1,K1+1)**2+PHKK(2,K1+1)**2+PHKK(3,K1+1)**2)
-        MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
+C         MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
+        MOVE = DIST_VALUE/2.0D0
 
         WRITE(*,*) "TEST LOCATION X ~ ", VHKK(1,K1+1)
         WRITE(*,*) "TEST LOCATION Y ~ ", VHKK(2,K1+1)
