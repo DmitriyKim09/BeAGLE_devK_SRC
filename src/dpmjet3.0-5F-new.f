@@ -5238,7 +5238,7 @@ C            ENDIF
         Z_SPACE = (VHKK(3,K1+1) - VHKK(3,K2+1))/DIST_VALUE
 
         P00 = SQRT(PHKK(1,K1+1)**2+PHKK(2,K1+1)**2+PHKK(3,K1+1)**2)
-        MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-15)/2D0
+        MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-12)/2D0
 
         WRITE(*,*) "TEST LOCATION X ~ ", VHKK(1,K1+1)
         WRITE(*,*) "TEST LOCATION Y ~ ", VHKK(2,K1+1)
@@ -5265,7 +5265,7 @@ C            ENDIF
         DIST_VALUE = SQRT(DIST_3D)
 
 C     if the radius of deuteron > 2 fm, then revert it back 
-        IF( DIST_VALUE .GT. 4 ) THEN
+        IF( DIST_VALUE*1.0D-12 .GT. 4 ) THEN
           VHKK(1,K1+1) = VHKK(1,K1+1) + MOVE*X_SPACE
           VHKK(2,K1+1) = VHKK(2,K1+1) + MOVE*Y_SPACE
           VHKK(3,K1+1) = VHKK(3,K1+1) + MOVE*Z_SPACE
