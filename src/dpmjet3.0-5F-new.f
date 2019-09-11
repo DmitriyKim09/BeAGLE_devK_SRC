@@ -17822,7 +17822,7 @@ C Anything between Fe and Pb will be Pb n(k), similar for other nucleus.
         E0 = 0.0D0
         F0 = 0.0D0  
       ELSE 
-        WRITE(*,*) "Should not be called here. ERROR! ANUCLEUS = ",ANUCLEUS
+        WRITE(*,*) "Should not be called here.ERROR!ANUCLEUS=",ANUCLEUS
       ENDIF 
 
 C     Random number generation between 0 and 1     
