@@ -17761,13 +17761,41 @@ C       GOTO 20
 
       PARAMETER (PI=3.14159265359D+00)
 
-      IF( ANUCLEUS .EQ. 208 ) THEN
+      IF( (ANUCLEUS .LE. 208) .OR. (ANUCLEUS .GT. 56) ) THEN
         A0 = 1.80D0
         B0 = 4.77D0
         C0 = 0.0D0
         D0 = 25.5D0
         E0 = 0.0D0
         F0 = 40.3D0
+      ELSE IF( (ANUCLEUS .LE. 56) .OR. (ANUCLEUS .GT. 40)  ) THEN
+        A0 = 3.57D0
+        B0 = 4.97D0
+        C0 = 0.0D0
+        D0 = 19.8D0
+        E0 = 15.0D0
+        F0 = 0.0D0
+      ELSE IF( (ANUCLEUS .LE. 40) .OR. (ANUCLEUS .GT. 16)  ) THEN
+        A0 = 3.24D0
+        B0 = 3.72D0
+        C0 = 0.0D0
+        D0 = 11.1D0
+        E0 = 0.0D0
+        F0 = 0.0D0
+      ELSE IF( (ANUCLEUS .LE. 16) .OR. (ANUCLEUS .GT. 12)  ) THEN
+        A0 = 2.74D0
+        B0 = 3.33D0
+        C0 = 6.66D0
+        D0 = 0.0D0
+        E0 = 0.0D0
+        F0 = 0.0D0
+      ELSE IF( (ANUCLEUS .LE. 12) .OR. (ANUCLEUS .GT. 4)  ) THEN
+        A0 = 2.61D0
+        B0 = 2.66D0
+        C0 = 3.54D0
+        D0 = 0.0D0
+        E0 = 0.0D0
+        F0 = 0.0D0  
       ELSE 
         A0 = 1.80D0
         B0 = 4.77D0
