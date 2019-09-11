@@ -5197,7 +5197,7 @@ C            ENDIF
         ENDIF  
 
          
-* start to bring them together at a distance of ~ 1/n(k) fm
+C       start to bring them together at a distance of ~ 1/n(k) fm
         
         IF( (K1 .GT. 0) .AND. (K2 .GT. 0) ) THEN
           DIST_VALUE = SQRT(C00)
@@ -5206,8 +5206,24 @@ C            ENDIF
           Z_SPACE = (VHKK(3,K1) - VHKK(3,K2))/DIST_VALUE
 
           MOVE = DIST_VALUE
-          MOVE = MOVE - (0.197D0/P00)*1.0D-15
+          MOVE = MOVE - (0.197D0/P00)*1.0D-12
           MOVE = MOVE/2.0D0
+
+          IF( P00 .LT. 0.25D0 ) THEN
+            MOVE = 0.0D0
+          ELSE
+            MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-12)/2D0
+          ENDIF
+
+          WRITE(*,*) "TEST LOCATION X ~ ", VHKK(1,K1)
+          WRITE(*,*) "TEST LOCATION Y ~ ", VHKK(2,K1)
+          WRITE(*,*) "TEST LOCATION Z ~ ", VHKK(3,K1)
+
+          WRITE(*,*) "TEST LOCATION 2 X ~ ", VHKK(1,K2)
+          WRITE(*,*) "TEST LOCATION 2 Y ~ ", VHKK(2,K2)
+          WRITE(*,*) "TEST LOCATION 2 Z ~ ", VHKK(3,K2)
+
+          WRITE(*,*) "Check distance 1st ~ ", DIST_VALUE
 
           VHKK(1,K1) = VHKK(1,K1) - MOVE*X_SPACE
           VHKK(2,K1) = VHKK(2,K1) - MOVE*Y_SPACE
@@ -5216,6 +5232,18 @@ C            ENDIF
           VHKK(1,K2) = VHKK(1,K2) + MOVE*X_SPACE
           VHKK(2,K2) = VHKK(2,K2) + MOVE*Y_SPACE
           VHKK(3,K2) = VHKK(3,K2) + MOVE*Z_SPACE
+
+          DIST1 = (VHKK(1,K1)-VHKK(1,K2))**2
+          DIST2 = (VHKK(2,K1)-VHKK(2,K2))**2
+          DIST3 = (VHKK(3,K1)-VHKK(3,K2))**2
+          DIST_3D = DIST1+DIST2+DIST3
+          DIST_VALUE = SQRT(DIST_3D)
+
+          IF( MOVE .NE. 0.0D0 ) THEN
+            WRITE(*,*) "Check distance 2nd ~ ", DIST_VALUE
+          ENDIF 
+
+
         ENDIF
 
       ENDIF  
@@ -5245,34 +5273,14 @@ C            ENDIF
           MOVE = (DIST_VALUE-(0.197D0/P00)*1.0D-12)/2D0
         ENDIF
 
-        WRITE(*,*) "TEST LOCATION X ~ ", VHKK(1,K1+1)
-        WRITE(*,*) "TEST LOCATION Y ~ ", VHKK(2,K1+1)
-        WRITE(*,*) "TEST LOCATION Z ~ ", VHKK(3,K1+1)
-
-        WRITE(*,*) "TEST LOCATION 2 X ~ ", VHKK(1,K2+1)
-        WRITE(*,*) "TEST LOCATION 2 Y ~ ", VHKK(2,K2+1)
-        WRITE(*,*) "TEST LOCATION 2 Z ~ ", VHKK(3,K2+1)
-
-        WRITE(*,*) "Check distance 1st ~ ", DIST_VALUE
-
         VHKK(1,K1+1) = VHKK(1,K1+1) - MOVE*X_SPACE
         VHKK(2,K1+1) = VHKK(2,K1+1) - MOVE*Y_SPACE
         VHKK(3,K1+1) = VHKK(3,K1+1) - MOVE*Z_SPACE
 
         VHKK(1,K2+1) = VHKK(1,K2+1) + MOVE*X_SPACE
         VHKK(2,K2+1) = VHKK(2,K2+1) + MOVE*Y_SPACE
-        VHKK(3,K2+1) = VHKK(3,K2+1) + MOVE*Z_SPACE
+        VHKK(3,K2+1) = VHKK(3,K2+1) + MOVE*Z_SPACE 
 
-        DIST1 = (VHKK(1,K1+1)-VHKK(1,K2+1))**2
-        DIST2 = (VHKK(2,K1+1)-VHKK(2,K2+1))**2
-        DIST3 = (VHKK(3,K1+1)-VHKK(3,K2+1))**2
-        DIST_3D = DIST1+DIST2+DIST3
-        DIST_VALUE = SQRT(DIST_3D)
-
-        IF( MOVE .NE. 0.0D0 ) THEN
-          WRITE(*,*) "Check distance 2nd ~ ", DIST_VALUE
-        ENDIF  
-        
       ENDIF
     
       RETURN
