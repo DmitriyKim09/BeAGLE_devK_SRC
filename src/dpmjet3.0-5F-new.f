@@ -17937,6 +17937,7 @@ C     momentum tail as for k > 3 fm**-1
 C     Different n(k) distribution.  
 C     11, 12, 13, 14 are alt 1, 2, 3, 4, respectively.
 C     NN is normalization to unity.
+C     3 is only heavy tail but not hard cutoff.
 
       E = C
       IF( KRANGE .EQ. 1 ) THEN
@@ -17947,6 +17948,10 @@ C     NN is normalization to unity.
         E = D
         B2 = 0.220D0
         NN = 1.0D0
+      ELSE IF( KRANGE .EQ. 3 ) THEN
+        E = C
+        A0 = 0.0D0
+        A1 = 0.0D0
       ELSE IF( KRANGE .EQ. 11 ) THEN
         E = C
         B2 = 0.10D0
