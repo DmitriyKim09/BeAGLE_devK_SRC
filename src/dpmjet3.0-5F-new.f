@@ -5204,7 +5204,6 @@ C       start to bring them together at a distance of ~ 1/n(k) fm
 C       IFMDIST = 3 and 4 -> switching "MOVING" on and off, respectively
         
         IF( (K1 .GT. 0) .AND. (K2 .GT. 0) .AND. (IFMDIST .EQ. 5) ) THEN
-          WRITE(*,*) "Start to move the nucleons"
           DIST_VALUE = SQRT(C00)
           X_SPACE = (VHKK(1,K1) - VHKK(1,K2))/DIST_VALUE
           Y_SPACE = (VHKK(2,K1) - VHKK(2,K2))/DIST_VALUE
