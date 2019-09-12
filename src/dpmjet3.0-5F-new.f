@@ -5090,7 +5090,7 @@ C     Initialize SRC_PARTNER_INDEX = -1
          WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
       endif
 
-      IF( (NMASS .GE. 12) .AND. (IFMDIST .GE. 1) ) THEN
+      IF( (NMASS .GE. 12) .AND. (IFMDIST .GE. 4) ) THEN
         C00 = 9999.0D0
         D00 = DT_RNDM(D00)
         IF( D00 .LE. 0.2D0 ) THEN ! now hard-coded 20% SRC nucleons probability
@@ -5136,10 +5136,13 @@ C           WRITE(*,*) 'py: ', PHKK(2,K2)
 C           WRITE(*,*) 'pz: ', PHKK(3,K2)
 C           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
-          CALL DT_KFERMI(P00,NMASS,IFMDIST) !re-sample momentum using deuteron high momentum tail
-          P00=P00*(PFERMP(2)+PFERMN(2))/2.0D0
-          WRITE(*,*) 'Fermi momentum P00 ', P00
-          WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
+          CALL DT_KFERMI(P00,NMASS,IFMDIST) 
+            !re-sample momentum using deuteron high momentum tail
+          P00=P00*(PFERMP(2)+PFERMN(2))/2.0D0 
+            !Take the average of proton and neutron momentum
+
+C         WRITE(*,*) 'Fermi momentum P00 ', P00
+C         WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
           CALL DT_DPOLI(POLC,POLS)
           CALL DT_DSFECF(SFE,CFE)
           CXTA = POLS*CFE
@@ -5198,8 +5201,9 @@ C           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
          
 C       start to bring them together at a distance of ~ 1/n(k) fm
+C       IFMDIST = 3 and 4 -> switching "MOVING" on and off, respectively
         
-        IF( (K1 .GT. 0) .AND. (K2 .GT. 0) ) THEN
+        IF( (K1 .GT. 0) .AND. (K2 .GT. 0) .AND. (IFMDIST .EQ. 5) ) THEN
           DIST_VALUE = SQRT(C00)
           X_SPACE = (VHKK(1,K1) - VHKK(1,K2))/DIST_VALUE
           Y_SPACE = (VHKK(2,K1) - VHKK(2,K2))/DIST_VALUE
@@ -5227,11 +5231,11 @@ C       start to bring them together at a distance of ~ 1/n(k) fm
 
       ENDIF  
 
-C     for Deuteron only, if IFMDIST .GE. 1, bring them closer 
+C     for Deuteron only, if IFMDIST .EQ. 3, bring them closer 
 C     at a distance ~ 1/n(k) without changing momentum. IFMDIST = 1 
 C     already samples high momentum for deuteron.
 
-      IF( (NMASS .EQ. 2) .AND. (IFMDIST .GE. 1) ) THEN
+      IF( (NMASS .EQ. 2) .AND. (IFMDIST .EQ. 3) ) THEN
         K1 = 1
         K2 = 2
         DIST1 = (VHKK(1,K1+1)-VHKK(1,K2+1))**2
@@ -5323,7 +5327,6 @@ C     already samples high momentum for deuteron.
             CALL DT_DFERMI(PABS,NMASS)
          ENDIF
          PABS = PFERM*PABS
-         WRITE(*,*) "nucelon momentum test PABS ~ ",PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
@@ -17917,10 +17920,12 @@ C     momentum tail as for k > 3 fm**-1
 C     Different n(k) distribution.  
 C     11, 12, 13, 14 are alt 1, 2, 3, 4, respectively.
 C     NN is normalization to unity.
-C     3 is only heavy tail but not hard cutoff.
+C     1 and 3 are the same, where 3 turns on "MOVING"
+C     2 is > 0.993 cross section
+C     4 and 5 are heavy tails, where 5 turns on "MOVING" for A>12
 
       E = C
-      IF( KRANGE .EQ. 1 ) THEN
+      IF( (KRANGE .EQ. 1) .OR. (KRANGE .EQ. 3)  ) THEN ! 
         E = C
         B2 = 0.220D0
         NN = 1.0D0
@@ -17928,7 +17933,7 @@ C     3 is only heavy tail but not hard cutoff.
         E = D
         B2 = 0.220D0
         NN = 1.0D0
-      ELSE IF( KRANGE .EQ. 3 ) THEN
+      ELSE IF( (KRANGE .GE. 4) .AND. (KRANGE .LE. 5) ) THEN
         E = C
         A0 = 0.0D0
         A1 = 0.0D0
