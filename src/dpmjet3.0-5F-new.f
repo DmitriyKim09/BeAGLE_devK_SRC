@@ -5138,8 +5138,8 @@ C           WRITE(*,*) 'mass: ', PHKK(5,K2)
 
           CALL DT_KFERMI(P00,NMASS,IFMDIST) !re-sample momentum using deuteron high momentum tail
           P00=P00*(PFERMP(2)+PFERMN(2))/2.0D0
-C           WRITE(*,*) 'Fermi momentum P00 ', P00
-C           WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
+          WRITE(*,*) 'Fermi momentum P00 ', P00
+          WRITE(*,*) 'Distance (fm) scale ~ ', 0.197D0/P00
           CALL DT_DPOLI(POLC,POLS)
           CALL DT_DSFECF(SFE,CFE)
           CXTA = POLS*CFE
@@ -5323,6 +5323,7 @@ C     already samples high momentum for deuteron.
             CALL DT_DFERMI(PABS,NMASS)
          ENDIF
          PABS = PFERM*PABS
+         WRITE(*,*) "nucelon momentum test PABS ~ ",PABS
 C        IF (PABS.GE.PBIND) THEN
 C           ILOOP = ILOOP+1
 C           IF (MOD(ILOOP,500).EQ.0) THEN
