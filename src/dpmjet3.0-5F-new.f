@@ -5110,7 +5110,7 @@ C            ENDIF
 
 
       ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
-      DO WHILE( (ALPHA_AN .LT. 0) .OR. (ALPHA_AN .GT. 2) ) THEN
+      DO WHILE( (ALPHA_AN .LT. 0.0D0) .OR. (ALPHA_AN .GT. 2.0D0) )
         ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
       ENDDO
       WRITE(*,*) 'Gaussian sampling?: ', ALPHA_AN
