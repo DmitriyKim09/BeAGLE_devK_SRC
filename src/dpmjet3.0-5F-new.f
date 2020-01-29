@@ -2451,7 +2451,7 @@ C         WRITE(*,*) '          USER3 = # of "partons"'
          WRITE(*,*) '           USER1 = pxmiss'
          WRITE(*,*) '           USER2 = pxspec'
          WRITE(*,*) '           USER3 = P00'
-     ELSEIF (USERSET.EQ.16) THEN
+      ELSEIF (USERSET.EQ.16) THEN
          WRITE(*,*) 'USERSET 16 selected. Deut LF Wavefunction debug.'
          WRITE(*,*) '           USER1 = gaussian'
          WRITE(*,*) '           USER2 = gaussian'
