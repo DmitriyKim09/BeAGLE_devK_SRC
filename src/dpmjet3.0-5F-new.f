@@ -5155,8 +5155,8 @@ C            ENDIF
       PHKK(3,K) = (ALPHA_SN+Md)/4.0D0 - SNMT2/(ALPHA_SN*Md)
 
       IF (USERSET.EQ.16) THEN
-               USER1 = PHKK(3,IIMAIN)
-               USER2 = PHKK(3,K)
+               USER1 = PHKK(4,IIMAIN)
+               USER2 = PHKK(4,K)
                USER3 = PZT
       ENDIF
 
