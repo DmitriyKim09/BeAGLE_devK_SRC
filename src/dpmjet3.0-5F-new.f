@@ -5118,10 +5118,11 @@ C            ENDIF
       ENDDO
 
       !Bounded by 0 to 2
-      ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
-      DO WHILE( (ALPHA_AN .LT. 0.0D0) .OR. (ALPHA_AN .GT. 2.0D0) )
-        ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
-      ENDDO
+C       ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
+C       DO WHILE( (ALPHA_AN .LT. 0.0D0) .OR. (ALPHA_AN .GT. 2.0D0) )
+C         ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
+C       ENDDO
+
 
       WRITE(*,*) 'Before Pythia pick this nucleon: ', IIMAIN
       WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
@@ -5138,6 +5139,7 @@ C            ENDIF
       WRITE(*,*) 'mass: ', PHKK(5,K)
       
       !Set the alpha for spectator nucleon
+      ALPHA_AN = 2.0D0*( PHKK(4,IIMAIN)+PHKK(3,IIMAIN) )/Md
       ALPHA_SN = 2.0D0 - ALPHA_AN
 
       !active nucleon
@@ -5155,9 +5157,9 @@ C            ENDIF
       PHKK(3,K) = (ALPHA_SN+Md)/4.0D0 - SNMT2/(ALPHA_SN*Md)
 
       IF (USERSET.EQ.16) THEN
-               USER1 = PHKK(4,IIMAIN)
-               USER2 = PHKK(4,K)
-               USER3 = PZT
+               USER1 = PHKK(3,IIMAIN)
+               USER2 = PHKK(3,K)
+               USER3 = ALPHA_AN
       ENDIF
 
 
