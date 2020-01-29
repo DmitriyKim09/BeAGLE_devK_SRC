@@ -5086,6 +5086,10 @@ C            ENDIF
       DOUBLE PRECISION SNPXM, SNPYM, SNPZM !SN - Spectator Nucleon Px minus, Py minus, Pz minus
       DOUBLE PRECISION ANMT2, SNMT2 ! Active Nucleon OR Spectator Nucleon Transverse mass squared 
 
+      DOUBLE PRECISION ALPHA_AN, ALPHA_SN 
+      !Active Nucleon Alpha, LF momentum fraction. 0<ALPHA_AN<2 
+      !Spectator Nucleon Alpha - ALPHA_SN = 2-ALPHA_AN
+
       PARAMETER (PI=3.14159265359D+00)
 
       PARAMETER (Md=1.87561D+00) !Hard code mass for deuteron
@@ -5098,6 +5102,10 @@ C            ENDIF
       COMMON /DTNPOT/ PFERMP(2),PFERMN(2),FERMOD,
      &                EBINDP(2),EBINDN(2),EPOT(2,210),
      &                ETACOU(2),ICOUL,LFERMI 
+
+
+      CALL DT_RANNOR(ALPHA_AN,ALPHA_SN)
+      WRITE(*,*) 'Gaussian sampling?: ', ALPHA_AN
 
 
       WRITE(*,*) 'Pythia pick this nucleon: ', IIMAIN
