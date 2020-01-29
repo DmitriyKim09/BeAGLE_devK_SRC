@@ -1049,6 +1049,9 @@ c VINT(1-4) is W, W2, -SQRT(Q2), M_N
          endif
       endif
 
+
+      CALL DT_SPECTRALFUNC(PHKK,NINT(INUMOD),IIMAIN,IFMPOST)
+
 C... If requested, fix the e+D event kinematics.
       if (IFMPOST.GT.0) then
          if (ITZ.NE.1 .OR. IT.NE.2) 

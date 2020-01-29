@@ -5046,6 +5046,59 @@ C            ENDIF
       RETURN
       END
 
+*$ CREATE DT_SPECTRALFUNC.FOR
+*COPY DT_SPECTRALFUNC
+*
+*==spectralfunc==============================================================*
+*
+
+      SUBROUTINE DT_SPECTRALFUNC(PHKK,NMASS,IIMAIN,IFMPOST)
+
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      SAVE
+
+      DOUBLE PRECISION ANPXP, ANPYP, ANPZP !AN - Active Nucleon Px plus, Py plus, Pz plus
+      DOUBLE PRECISION SNPXP, SNPYP, SNPZP !SN - Spectator Nucleon Px plus, Py plus, Pz plus
+      DOUBLE PRECISION ANPXM, ANPYM, ANPZM !AN - Active Nucleon Px minus, Py minus, Pz minus
+      DOUBLE PRECISION SNPXM, SNPYM, SNPZM !SN - Spectator Nucleon Px minus, Py minus, Pz minus
+      DOUBLE PRECISION ANMT2, SNMT2 ! Active Nucleon OR Spectator Nucleon Transverse mass squared 
+
+      PARAMETER (PI=3.14159265359D+00)
+
+      PARAMETER (Md=1.87561D+00) !Hard code mass for deuteron
+
+      DIMENSION PHKK(5,NMASS)
+
+      INCLUDE 'beagle.inc'
+
+      LOGICAL LFERMI
+      COMMON /DTNPOT/ PFERMP(2),PFERMN(2),FERMOD,
+     &                EBINDP(2),EBINDN(2),EPOT(2,210),
+     &                ETACOU(2),ICOUL,LFERMI 
+
+
+      WRITE(*,*) 'Pythia pick this nucleon: ', IIMAIN
+      WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
+      WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
+      WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
+      WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
+
+      DO J=2,NMASS+1
+        IF( J .EQ. IIMAIN ) THEN
+          WRITE(*,*) 'SAME NUCLEON! '
+          CONTINUE
+        ELSE 
+          WRITE(*,*) 'spectator nucleon: ', J
+          WRITE(*,*) 'px: ', PHKK(1,J)
+          WRITE(*,*) 'py: ', PHKK(2,J)
+          WRITE(*,*) 'pz: ', PHKK(3,J)
+          WRITE(*,*) 'mass: ', PHKK(5,J)
+
+        ENDIF
+      ENDDO
+
+      RETURN
+      END
 *$ CREATE DT_PICKSRC.FOR
 *COPY DT_PICKSRC
 *
