@@ -1,8 +1,3 @@
- FLRM64 SKIPPING OVER      1000000000
- FLRM64 SKIPPING OVER      1000000000
- FLRM64 SKIPPING OVER      1000000000
- FLRM64 SKIPPING OVER               3
-  FLRM64 INITIALIZED           3           3       98765       12345  1234598765
   *** Reading evaporation and nuclear data from unit: 14
 
  **** Nuclear data file for Fluka9x-20xy ****
@@ -271,3 +266,8 @@
   **** Evaporated "heavies" transport    activated **** 
   **** High Energy fission   requested & activated **** 
   **** Fermi Break Up        requested & activated **** 
+ FLRM64 SKIPPING OVER      1000000000
+ FLRM64 SKIPPING OVER      1000000000
+ FLRM64 SKIPPING OVER      1000000000
+ FLRM64 SKIPPING OVER               3
+  FLRM64 INITIALIZED           3           3       98765       12345  1234598765

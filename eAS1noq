@@ -1,4 +1,4 @@
-'outForPythiaMode/eAu_10x100_Q2_1_20_y_0.01_0.95_tau_9_noquench_kt=ptfrag=0.32_Shd1_10k.txt' ! output file name
+'outForPythiaMode/eA_TEST.txt' ! output file name
 1e-06, 1.00       ! xmin and xmax
 F2PY,1998         ! F2-Model, R-Parametrisation
 0                 ! switch for rad corrections; 0:no, 1:yes, 2:gen.lookup table 
