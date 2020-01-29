@@ -19746,72 +19746,73 @@ C     ROTATION INTO THE ORIGINAL DIRECTION
       RETURN
       END
 
-C *$ CREATE DT_GAUSSIAN.FOR
-C *COPY DT_GAUSSIAN
-C *
-C *===gaussian===========================================================*
-C *
-C       SUBROUTINE DT_GAUSSIAN(MEAN,SIGMA)
+*$ CREATE DT_GAUSSIAN.FOR
+*COPY DT_GAUSSIAN
+*
+*===gaussian===========================================================*
+*
+      SUBROUTINE DT_GAUSSIAN(MEAN,SIGMA,GAUSNUM)
 
-C ************************************************************************
-C * Sampling from Gaussian distribution with mean and sigma.             *
-C * Written by Kong Tu                                     *
-C ************************************************************************
+************************************************************************
+* Sampling from Gaussian distribution with mean and sigma.             *
+* Written by Kong Tu                                                   *
+************************************************************************
   
-C       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-C       SAVE
-C       PARAMETER (TINY10=1.0D-10)
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      SAVE
+      PARAMETER (TINY10=1.0D-10)
 
       
-C       DOUBLE PRECISION A0,Z0,Z1,Z2,X0,NN,CDFN,
-C      &   STEPSIZE,CDF,CDFPLUS,CDFMINUS
-C       DOUBLE PRECISION CDFT(1:10000)
+      DOUBLE PRECISION A0,E,Z0,Z1,Z2,X0,NN,CDFN,
+     &   STEPSIZE,CDF,CDFPLUS,CDFMINUS
+      DOUBLE PRECISION CDFT(1:10000)
 
-C       A0 = 1.0D0
-C       X0 = MEAN-10.0D0*SIGMA
-C       CDF = 0.0D0
-C       STEPSIZE = (20.0D0*SIGMA)/10000.0D0
+      E = DT_RNDM(GAUSNUM)
 
-C       DO 10 I = 1,10000
-C         Z0 = (X0-MEAN)*(X0-MEAN)
-C         Z1 = A0 * EXP(-Z0/(2*SIGMA*SIGMA))
-C         CDF = CDF + Z1*STEPSIZE
-C         X0 = X0 + STEPSIZE
-C    10 CONTINUE
+      A0 = 1.0D0
+      X0 = MEAN-10.0D0*SIGMA
+      CDF = 0.0D0
+      STEPSIZE = (20.0D0*SIGMA)/10000.0D0
 
-C       CDFN = CDF
-C       X0 = 0.000D0
-C       CDF = 0.000D0
+      DO 10 I = 1,10000
+        Z0 = (X0-MEAN)*(X0-MEAN)
+        Z1 = A0 * EXP(-Z0/(2*SIGMA*SIGMA))
+        CDF = CDF + Z1*STEPSIZE
+        X0 = X0 + STEPSIZE
+   10 CONTINUE
 
-C       DO 20 I = 1,10000
-C         Z0 = A0 * (EXP(-B0*X0*X0)/((1+C0*X0*X0)*(1+C0*X0*X0)))
-C         Z1 = A1 * (EXP(-B1*X0*X0)/((1+C1*X0*X0)*(1+C1*X0*X0)))
-C         Z2 = A2 * (EXP(-B2*X0*X0)/((1+C2*X0*X0)*(1+C2*X0*X0)))
-C         CDF = CDF + (0.001D0/CDFN)*(NN*(Z0+Z1+Z2)*(4.0D0*PI*X0*X0))
-C         X0 = X0 + 0.001D0
+      CDFN = CDF
+      X0 = MEAN-10.0D0*SIGMA
+      CDF = 0.000D0
 
-C         CDFT(I) = CDF
-C         !T for tolorence, this needs to be set dynamically
-C         IF( I .EQ. 1 ) THEN
-C           T = 0.005D0
-C         ELSE
-C           T = CDFT(I)-CDFT(I-1)
-C         ENDIF
+      DO 20 I = 1,10000
+        Z0 = (X0-MEAN)*(X0-MEAN)
+        Z1 = A0 * EXP(-Z0/(2*SIGMA*SIGMA))
+        CDF = CDF + (STEPSIZE/CDFN)*Z1
+        X0 = X0 + STEPSIZE
+
+        CDFT(I) = CDF
+        !T for tolorence, this needs to be set dynamically
+        IF( I .EQ. 1 ) THEN
+          T = 0.005D0
+        ELSE
+          T = CDFT(I)-CDFT(I-1)
+        ENDIF
         
-C         CDFPLUS = CDF + T
-C         CDFMINUS = CDF + 10D-20
+        CDFPLUS = CDF + T
+        CDFMINUS = CDF + 10D-20
 
-C         IF( (E .GE. CDFMINUS) .AND. (E .LT. CDFPLUS) ) THEN
-C           GGPART = X0
-C           RETURN
-C         ELSE
-C           GOTO 20
-C         ENDIF
+        IF( (E .GE. CDFMINUS) .AND. (E .LT. CDFPLUS) ) THEN
+          GAUSNUM = X0
+          RETURN
+        ELSE
+          GOTO 20
+        ENDIF
      
-C    20 CONTINUE
+   20 CONTINUE
 
-C       RETURN
-C       END
+      RETURN
+      END
 
 
 
