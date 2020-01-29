@@ -5109,7 +5109,10 @@ C            ENDIF
      &                ETACOU(2),ICOUL,LFERMI 
 
 
-      ALPHA_AN = DT_GAUSSIAN(1.0D0,0.5D0)
+      ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
+      DO WHILE( (ALPHA_AN .LT. 0) .OR. (ALPHA_AN .GT. 2) ) THEN
+        ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
+      ENDDO
       WRITE(*,*) 'Gaussian sampling?: ', ALPHA_AN
       ALPHA_SN = 2.0D0 - ALPHA_AN
 
