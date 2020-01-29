@@ -5109,7 +5109,7 @@ C            ENDIF
      &                ETACOU(2),ICOUL,LFERMI 
 
 
-      CALL DT_GAUSSIAN(1.0D0,0.5D0,ALPHA_AN)
+      ALPHA_AN = DT_GAUSSIAN(1.0D0,0.5D0)
       WRITE(*,*) 'Gaussian sampling?: ', ALPHA_AN
       ALPHA_SN = 2.0D0 - ALPHA_AN
 
@@ -19763,7 +19763,7 @@ C     ROTATION INTO THE ORIGINAL DIRECTION
 *
 *===gaussian===========================================================*
 *
-      SUBROUTINE DT_GAUSSIAN(MEAN,SIGMA,GAUSNUM)
+      DOUBLE PRECISION FUNCTION DT_GAUSSIAN(MEAN,SIGMA)
 
 ************************************************************************
 * Sampling from Gaussian distribution with mean and sigma.             *
@@ -19815,7 +19815,7 @@ C     ROTATION INTO THE ORIGINAL DIRECTION
         CDFMINUS = CDF + 10D-20
 
         IF( (E .GE. CDFMINUS) .AND. (E .LT. CDFPLUS) ) THEN
-          GAUSNUM = X0
+          DT_GAUSSIAN = X0
           RETURN
         ELSE
           GOTO 20
