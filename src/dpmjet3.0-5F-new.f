@@ -5139,8 +5139,8 @@ C       ENDDO
       WRITE(*,*) 'mass: ', PHKK(5,K)
       
       !Set the alpha for spectator nucleon
-      ALPHA_AN = 2.0D0*( PHKK(4,IIMAIN)+PHKK(3,IIMAIN) )/Md
-      ALPHA_SN = 2.0D0 - ALPHA_AN
+      ALPHA_SN = 2.0D0*( PHKK(4,K)+PHKK(3,K) )/Md
+      ALPHA_AN = 2.0D0 - ALPHA_SN
 
       !active nucleon
       ANMT2 = PHKK(5,IIMAIN)*PHKK(5,IIMAIN) +
