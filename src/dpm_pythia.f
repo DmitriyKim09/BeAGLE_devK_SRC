@@ -1107,6 +1107,11 @@ C     Here MNUCL is the SPECTATOR (not struck) nucleon mass from D or SRC-pair:
          endif
       endif
 
+
+      if(IFMPOST .GE. 2) then
+        CALL DT_SPECTRALFUNC(PHKK,NINT(INUMOD),IIMAIN)
+      endif
+
 C... If requested, fix the e+D event kinematics.
       if (IFMPOST.GT.0) then
          if (ITZ.NE.1 .OR. IT.NE.2) 
