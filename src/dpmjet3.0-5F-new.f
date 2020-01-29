@@ -5108,40 +5108,72 @@ C            ENDIF
      &                EBINDP(2),EBINDN(2),EPOT(2,210),
      &                ETACOU(2),ICOUL,LFERMI 
 
+      !find index for spectator nucleon
+      DO J=2,NMASS+1
+        IF( J .EQ. IIMAIN ) THEN
+          CONTINUE
+        ELSE 
+          K = J
+        ENDIF
+      ENDDO
 
+      !Bounded by 0 to 2
       ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
       DO WHILE( (ALPHA_AN .LT. 0.0D0) .OR. (ALPHA_AN .GT. 2.0D0) )
         ALPHA_AN = DT_GAUSSIAN(1.0D0,0.05D0)
       ENDDO
-      WRITE(*,*) 'Gaussian sampling?: ', ALPHA_AN
+
+      WRITE(*,*) 'Before Pythia pick this nucleon: ', IIMAIN
+      WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
+      WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
+      WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
+      WRITE(*,*) 'E: ', PHKK(4,IIMAIN)
+      WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
+
+      WRITE(*,*) 'Before spectator nucleon: ', K
+      WRITE(*,*) 'px: ', PHKK(1,K)
+      WRITE(*,*) 'py: ', PHKK(2,K)
+      WRITE(*,*) 'pz: ', PHKK(3,K)
+      WRITE(*,*) 'E: ', PHKK(4,K)
+      WRITE(*,*) 'mass: ', PHKK(5,K)
+      
+      !Set the alpha for spectator nucleon
       ALPHA_SN = 2.0D0 - ALPHA_AN
 
+      !active nucleon
+      ANMT2 = PHKK(5,IIMAIN)*PHKK(5,IIMAIN) +
+     & + PHKK(1,IIMAIN)*PHKK(1,IIMAIN) + PHKK(2,IIMAIN)*PHKK(2,IIMAIN)
+
+      PHKK(4,IIMAIN) = (ALPHA_AN+Md)/4.0D0 + ANMT2/(ALPHA_AN*Md)
+      PHKK(3,IIMAIN) = (ALPHA_AN+Md)/4.0D0 - ANMT2/(ALPHA_AN*Md)
+
+      !spectator nucleon
+      SNMT2 = PHKK(5,K)*PHKK(5,K) +
+     & + PHKK(1,K)*PHKK(1,K) + PHKK(2,K)*PHKK(2,K)
+
+      PHKK(4,K) = (ALPHA_SN+Md)/4.0D0 + SNMT2/(ALPHA_SN*Md)
+      PHKK(3,K) = (ALPHA_SN+Md)/4.0D0 - SNMT2/(ALPHA_SN*Md)
+
       IF (USERSET.EQ.16) THEN
-               USER1 = ALPHA_AN
-               USER2 = ALPHA_SN
+               USER1 = PHKK(3,IIMAIN)
+               USER2 = PHKK(3,K)
                USER3 = PZT
       ENDIF
 
 
       WRITE(*,*) 'Pythia pick this nucleon: ', IIMAIN
-C       WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
-C       WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
-C       WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
-C       WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
+      WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
+      WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
+      WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
+      WRITE(*,*) 'E: ', PHKK(4,IIMAIN)
+      WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
 
-      DO J=2,NMASS+1
-        IF( J .EQ. IIMAIN ) THEN
-          WRITE(*,*) 'SAME NUCLEON! '
-          CONTINUE
-        ELSE 
-          WRITE(*,*) 'spectator nucleon: ', J
-C           WRITE(*,*) 'px: ', PHKK(1,J)
-C           WRITE(*,*) 'py: ', PHKK(2,J)
-C           WRITE(*,*) 'pz: ', PHKK(3,J)
-C           WRITE(*,*) 'mass: ', PHKK(5,J)
-
-        ENDIF
-      ENDDO
+      WRITE(*,*) 'spectator nucleon: ', K
+      WRITE(*,*) 'px: ', PHKK(1,K)
+      WRITE(*,*) 'py: ', PHKK(2,K)
+      WRITE(*,*) 'pz: ', PHKK(3,K)
+      WRITE(*,*) 'E: ', PHKK(4,K)
+      WRITE(*,*) 'mass: ', PHKK(5,K)
 
       RETURN
       END
