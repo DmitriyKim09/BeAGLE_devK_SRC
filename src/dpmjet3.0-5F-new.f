@@ -2451,6 +2451,11 @@ C         WRITE(*,*) '          USER3 = # of "partons"'
          WRITE(*,*) '           USER1 = pxmiss'
          WRITE(*,*) '           USER2 = pxspec'
          WRITE(*,*) '           USER3 = P00'
+     ELSEIF (USERSET.EQ.16) THEN
+         WRITE(*,*) 'USERSET 16 selected. Deut LF Wavefunction debug.'
+         WRITE(*,*) '           USER1 = gaussian'
+         WRITE(*,*) '           USER2 = gaussian'
+         WRITE(*,*) '           USER3 = gaussian'
       ENDIF
       GOTO 10
 
@@ -5104,15 +5109,22 @@ C            ENDIF
      &                ETACOU(2),ICOUL,LFERMI 
 
 
-      CALL DT_RANNOR(ALPHA_AN,ALPHA_SN)
+      CALL DT_GAUSSIAN(1.0D0,0.5D0,ALPHA_AN)
       WRITE(*,*) 'Gaussian sampling?: ', ALPHA_AN
+      ALPHA_SN = 2.0D0 - ALPHA_AN
+
+      IF (USERSET.EQ.16) THEN
+               USER1 = ALPHA_AN
+               USER2 = ALPHA_SN
+               USER3 = PZT
+      ENDIF
 
 
       WRITE(*,*) 'Pythia pick this nucleon: ', IIMAIN
-      WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
-      WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
-      WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
-      WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
+C       WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
+C       WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
+C       WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
+C       WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
 
       DO J=2,NMASS+1
         IF( J .EQ. IIMAIN ) THEN
@@ -5120,10 +5132,10 @@ C            ENDIF
           CONTINUE
         ELSE 
           WRITE(*,*) 'spectator nucleon: ', J
-          WRITE(*,*) 'px: ', PHKK(1,J)
-          WRITE(*,*) 'py: ', PHKK(2,J)
-          WRITE(*,*) 'pz: ', PHKK(3,J)
-          WRITE(*,*) 'mass: ', PHKK(5,J)
+C           WRITE(*,*) 'px: ', PHKK(1,J)
+C           WRITE(*,*) 'py: ', PHKK(2,J)
+C           WRITE(*,*) 'pz: ', PHKK(3,J)
+C           WRITE(*,*) 'mass: ', PHKK(5,J)
 
         ENDIF
       ENDDO
