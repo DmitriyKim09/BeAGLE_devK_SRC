@@ -19763,7 +19763,7 @@ C     ROTATION INTO THE ORIGINAL DIRECTION
 *
 *===gaussian===========================================================*
 *
-      DOUBLE PRECISION FUNCTION DT_GAUSSIAN(MEAN,SIGMA)
+      DOUBLE PRECISION FUNCTION DT_GAUSSIAN(A,B)
 
 ************************************************************************
 * Sampling from Gaussian distribution with mean and sigma.             *
@@ -19787,8 +19787,8 @@ C     ROTATION INTO THE ORIGINAL DIRECTION
       STEPSIZE = 1.0D-3
 
       DO I = 1,10000
-        Z0 = (X0-MEAN)*(X0-MEAN)
-        Z1 = A0 * EXP(-Z0/(2*SIGMA*SIGMA))
+        Z0 = (X0-A)*(X0-A)
+        Z1 = A0 * EXP(-Z0/(2*B*B))
         CDF = CDF + Z1*STEPSIZE
         X0 = X0 + STEPSIZE
       ENDDO
@@ -19798,8 +19798,8 @@ C     ROTATION INTO THE ORIGINAL DIRECTION
       CDF = 0.000D0
 
       DO 20 I = 1,10000
-        Z0 = (X0-MEAN)*(X0-MEAN)
-        Z1 = A0 * EXP(-Z0/(2*SIGMA*SIGMA))
+        Z0 = (X0-A)*(X0-A)
+        Z1 = A0 * EXP(-Z0/(2*B*B))
         CDF = CDF + (STEPSIZE/CDFN)*Z1
         X0 = X0 + STEPSIZE
 
