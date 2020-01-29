@@ -5109,7 +5109,7 @@ C            ENDIF
      &                ETACOU(2),ICOUL,LFERMI 
 
 
-      CALL DT_GAUSSIAN(10.0D0,0.5D0,ALPHA_AN)
+      CALL DT_GAUSSIAN(1.0D0,0.5D0,ALPHA_AN)
       WRITE(*,*) 'Gaussian sampling?: ', ALPHA_AN
       ALPHA_SN = 2.0D0 - ALPHA_AN
 
@@ -19782,9 +19782,9 @@ C     ROTATION INTO THE ORIGINAL DIRECTION
       E = DT_RNDM(GAUSNUM)
 
       A0 = 1.0D0
-      X0 = MEAN-10.0D0*SIGMA
+      X0 = -4.0D0
       CDF = 0.0D0
-      STEPSIZE = (20.0D0*SIGMA)/10000.0D0
+      STEPSIZE = 1.0D-3
 
       DO I = 1,10000
         Z0 = (X0-MEAN)*(X0-MEAN)
@@ -19794,7 +19794,7 @@ C     ROTATION INTO THE ORIGINAL DIRECTION
       ENDDO
 
       CDFN = CDF
-      X0 = MEAN-10.0D0*SIGMA
+      X0 = -4.0D0
       CDF = 0.000D0
 
       DO 20 I = 1,10000
@@ -19822,6 +19822,8 @@ C     ROTATION INTO THE ORIGINAL DIRECTION
         ENDIF
      
    20 CONTINUE
+
+
 
       RETURN
       END
