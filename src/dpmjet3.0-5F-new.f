@@ -5075,7 +5075,7 @@ C            ENDIF
 *==spectralfunc==============================================================*
 *
 
-      SUBROUTINE DT_SPECTRALFUNC(PHKK,NMASS,IIMAIN,IFMPOST)
+      SUBROUTINE DT_SPECTRALFUNC(PHKK,NMASS,IIMAIN)
 
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
