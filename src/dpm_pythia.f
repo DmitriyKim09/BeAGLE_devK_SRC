@@ -1109,6 +1109,11 @@ C     Here MNUCL is the SPECTATOR (not struck) nucleon mass from D or SRC-pair:
 
 
       if(IFMPOST .GE. 2) then
+        WRITE(*,*) 'PXF : ', PXF
+        WRITE(*,*) 'PYF : ', PYF
+        WRITE(*,*) 'PZF : ', PZF
+        WRITE(*,*) 'EKF : ', EKF
+        
         CALL DT_SPECTRALFUNC(PHKK,NINT(INUMOD),IIMAIN)
       endif
 
