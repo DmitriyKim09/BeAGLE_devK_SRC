@@ -5084,7 +5084,7 @@ C            ENDIF
 
       IMPLICIT NONE
 
-      INTEGER B,J,K
+      INTEGER B,J,K,NMASS,IIMAIN
       DOUBLE PRECISION Md, PI
       DOUBLE PRECISION EEN, MNUC
       DOUBLE PRECISION ANMT2, SNMT2 ! Active Nucleon OR Spectator Nucleon Transverse mass squared 
@@ -5092,12 +5092,11 @@ C            ENDIF
       DOUBLE PRECISION ALPHA_AN, ALPHA_SN 
       !Active Nucleon Alpha, LF momentum fraction. 0<ALPHA_AN<2 
       !Spectator Nucleon Alpha - ALPHA_SN = 2-ALPHA_AN
+      DOUBLE PRECISION PHKK(5,NMASS)
 
       PARAMETER (PI=3.14159265359D+00)
 
       PARAMETER (Md=1.87561D+00) !Hard code mass for deuteron
-
-      DIMENSION PHKK(5,NMASS)
 
       INCLUDE 'beagle.inc'
 
