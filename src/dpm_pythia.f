@@ -989,6 +989,15 @@ C      CALL DT_PYOUTEP(4)
 * initialize IIMAINN to be -1 in DT_PICKSRC if not in SRC. 
 * otherwise, it would be the index for the SRC partner
 
+      if(IFMPOST .GE. 2) then
+        WRITE(*,*) 'PXF : ', PXF
+        WRITE(*,*) 'PYF : ', PYF
+        WRITE(*,*) 'PZF : ', PZF
+        WRITE(*,*) 'EKF : ', EKF
+        
+        CALL DT_SPECTRALFUNC(PHKK,NINT(INUMOD),IIMAIN)
+      endif
+
       IF( IIMAINN.NE.-1 ) THEN
         ISTHKK(IIMAINN)=-12
         NINTS=NINTS+1
@@ -1105,16 +1114,6 @@ C     Here MNUCL is the SPECTATOR (not struck) nucleon mass from D or SRC-pair:
             write(*,*) "DT_PYEVNTEP: TRF g*=z, after pf post-fix"
             CALL PYLIST(2)
          endif
-      endif
-
-
-      if(IFMPOST .GE. 2) then
-        WRITE(*,*) 'PXF : ', PXF
-        WRITE(*,*) 'PYF : ', PYF
-        WRITE(*,*) 'PZF : ', PZF
-        WRITE(*,*) 'EKF : ', EKF
-        
-        CALL DT_SPECTRALFUNC(PHKK,NINT(INUMOD),IIMAIN)
       endif
 
 C... If requested, fix the e+D event kinematics.

@@ -5085,10 +5085,7 @@ C            ENDIF
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       SAVE
 
-      DOUBLE PRECISION ANPXP, ANPYP, ANPZP !AN - Active Nucleon Px plus, Py plus, Pz plus
-      DOUBLE PRECISION SNPXP, SNPYP, SNPZP !SN - Spectator Nucleon Px plus, Py plus, Pz plus
-      DOUBLE PRECISION ANPXM, ANPYM, ANPZM !AN - Active Nucleon Px minus, Py minus, Pz minus
-      DOUBLE PRECISION SNPXM, SNPYM, SNPZM !SN - Spectator Nucleon Px minus, Py minus, Pz minus
+      DOUBLE PRECISION EEN, MNUC
       DOUBLE PRECISION ANMT2, SNMT2 ! Active Nucleon OR Spectator Nucleon Transverse mass squared 
 
       DOUBLE PRECISION ALPHA_AN, ALPHA_SN 
@@ -5139,7 +5136,10 @@ C       ENDDO
       WRITE(*,*) 'mass: ', PHKK(5,K)
       
       !Set the alpha for spectator nucleon
-      ALPHA_SN = 2.0D0*( PHKK(4,K)+PHKK(3,K) )/Md
+      MNUC = (PHKK(5,K) + PHKK(5,IIMAIN))/2.0D0
+      EEN = SQRT(PHKK(1,K)*PHKK(1,K)+PHKK(2,K)*PHKK(2,K)+
+     & PHKK(3,K)*PHKK(3,K) + MNUC*MNUC)
+      ALPHA_SN = 1.0D0 - PHKK(3,K)/EEN
       ALPHA_AN = 2.0D0 - ALPHA_SN
 
       !active nucleon
@@ -5159,7 +5159,7 @@ C       ENDDO
       IF (USERSET.EQ.16) THEN
                USER1 = PHKK(3,IIMAIN)
                USER2 = PHKK(3,K)
-               USER3 = ALPHA_AN
+               USER3 = ALPHA_SN
       ENDIF
 
 
