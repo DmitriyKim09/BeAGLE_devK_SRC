@@ -5094,16 +5094,21 @@ C            ENDIF
       !Spectator Nucleon Alpha - ALPHA_SN = 2-ALPHA_AN
       DOUBLE PRECISION PHKK(5,NMASS)
 
+      DOUBLE PRECISION PFERMP(2),PFERMN(2),FERMOD,
+     &                EBINDP(2),EBINDN(2),EPOT(2,210),
+     &                ETACOU(2)
+
+      LOGICAL LFERMI
+      INTEGER ICOUL
+      COMMON /DTNPOT/ PFERMP(2),PFERMN(2),FERMOD,
+     &                EBINDP(2),EBINDN(2),EPOT(2,210),
+     &                ETACOU(2),ICOUL,LFERMI 
+
       PARAMETER (PI=3.14159265359D+00)
 
       PARAMETER (Md=1.87561D+00) !Hard code mass for deuteron
 
       INCLUDE 'beagle.inc'
-
-      LOGICAL LFERMI
-      COMMON /DTNPOT/ PFERMP(2),PFERMN(2),FERMOD,
-     &                EBINDP(2),EBINDN(2),EPOT(2,210),
-     &                ETACOU(2),ICOUL,LFERMI 
 
       !find index for spectator nucleon
       DO J=2,NMASS+1
