@@ -988,9 +988,14 @@ C      CALL DT_PYOUTEP(4)
       CALL DT_PICKSRC(PHKK,VHKK,NINT(INUMOD),IIMAIN,IIMAINN)
 * initialize IIMAINN to be -1 in DT_PICKSRC if not in SRC. 
 * otherwise, it would be the index for the SRC partner
-
-      if(IFMPOST .GE. 2) then     
-        CALL DT_SPECTRALFUNC(PHKK,NINT(INUMOD),IIMAIN)
+      
+      !using IFMPOST to switch on applying LF kinematics to E and pz
+      if(IFMPOST .EQ. 2) then 
+        if(NINT(INUMOD).NE.2) then
+          STOP "FATAL: CAN ONLY DO DEUTERON KINEMATICS"    
+        else
+          CALL DT_SPECTRALFUNC(PHKK,NINT(INUMOD),IIMAIN)
+        endif
       endif
 
       IF( IIMAINN.NE.-1 ) THEN
@@ -1112,6 +1117,7 @@ C     Here MNUCL is the SPECTATOR (not struck) nucleon mass from D or SRC-pair:
       endif
 
 C... If requested, fix the e+D event kinematics.
+      ! change to .EQ. 1 instead of .GE. 1
       if (IFMPOST.EQ.1) then
          if (ITZ.NE.1 .OR. IT.NE.2) 
      &        STOP "FATAL: CAN ONLY POST-FIX DEUTERON KINEMATICS"

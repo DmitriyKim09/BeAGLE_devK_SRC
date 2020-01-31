@@ -5087,7 +5087,8 @@ C            ENDIF
       INTEGER J,K,NMASS,IIMAIN
       DOUBLE PRECISION Md, PI, B
       DOUBLE PRECISION EEN, MNUC
-      DOUBLE PRECISION ANMT2, SNMT2 ! Active Nucleon OR Spectator Nucleon Transverse mass squared 
+      DOUBLE PRECISION ANMT2, SNMT2 
+      ! Active Nucleon OR Spectator Nucleon Transverse mass squared 
 
       DOUBLE PRECISION ALPHA_AN, ALPHA_SN 
       !Active Nucleon Alpha, LF momentum fraction. 0<ALPHA_AN<2 
@@ -5105,7 +5106,6 @@ C            ENDIF
      &                ETACOU(2),ICOUL,LFERMI 
 
       PARAMETER (PI=3.14159265359D+00)
-
       PARAMETER (Md=1.87561D+00) !Hard code mass for deuteron
 
       INCLUDE 'beagle.inc'
@@ -5119,23 +5119,13 @@ C            ENDIF
         ENDIF
       ENDDO
 
-      WRITE(*,*) 'Before Pythia pick this nucleon: ', IIMAIN
-      WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
-      WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
-      WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
-      WRITE(*,*) 'E: ', PHKK(4,IIMAIN)
-      WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
-
-      WRITE(*,*) 'Before spectator nucleon: ', K
-      WRITE(*,*) 'px: ', PHKK(1,K)
-      WRITE(*,*) 'py: ', PHKK(2,K)
-      WRITE(*,*) 'pz: ', PHKK(3,K)
-      WRITE(*,*) 'E: ', PHKK(4,K)
-      WRITE(*,*) 'mass: ', PHKK(5,K)
-
+      !to save the spectator pz before in order to be compared with
+      !after LF kinematics fix used in USERSET = 16
       B = PHKK(3,K)
       
       !Set the alpha for spectator nucleon
+      !Attention - Strikman & Weiss uses average nucleon mass as 
+      !approximation instead of proton & neutron mass. 
       MNUC = (PHKK(5,K) + PHKK(5,IIMAIN))/2.0D0
       EEN = SQRT(PHKK(1,K)*PHKK(1,K)+PHKK(2,K)*PHKK(2,K)+
      & PHKK(3,K)*PHKK(3,K) + MNUC*MNUC)
@@ -5146,6 +5136,9 @@ C            ENDIF
       ANMT2 = PHKK(5,IIMAIN)*PHKK(5,IIMAIN) +
      & + PHKK(1,IIMAIN)*PHKK(1,IIMAIN) + PHKK(2,IIMAIN)*PHKK(2,IIMAIN)
 
+      !Only modify the E and pz. Note that pz has a opposite sign
+      !comparing to the paper because of the opposite convensions. 
+      !virtual photon +z and d is -z direction
       PHKK(4,IIMAIN) = (ALPHA_AN*Md)/4.0D0 + ANMT2/(ALPHA_AN*Md)
       PHKK(3,IIMAIN) = -(ALPHA_AN*Md)/4.0D0 + ANMT2/(ALPHA_AN*Md)
 
@@ -5157,28 +5150,14 @@ C            ENDIF
       PHKK(3,K) = -(ALPHA_SN*Md)/4.0D0 + SNMT2/(ALPHA_SN*Md)
 
       IF (USERSET.EQ.16) THEN
-               USER1 = B
-               USER2 = PHKK(3,K)
-               USER3 = ALPHA_SN
+         USER1 = B
+         USER2 = PHKK(3,K)
+         USER3 = ALPHA_SN
       ENDIF
-
-
-      WRITE(*,*) 'Pythia pick this nucleon: ', IIMAIN
-      WRITE(*,*) 'px: ', PHKK(1,IIMAIN)
-      WRITE(*,*) 'py: ', PHKK(2,IIMAIN)
-      WRITE(*,*) 'pz: ', PHKK(3,IIMAIN)
-      WRITE(*,*) 'E: ', PHKK(4,IIMAIN)
-      WRITE(*,*) 'mass: ', PHKK(5,IIMAIN)
-
-      WRITE(*,*) 'spectator nucleon: ', K
-      WRITE(*,*) 'px: ', PHKK(1,K)
-      WRITE(*,*) 'py: ', PHKK(2,K)
-      WRITE(*,*) 'pz: ', PHKK(3,K)
-      WRITE(*,*) 'E: ', PHKK(4,K)
-      WRITE(*,*) 'mass: ', PHKK(5,K)
 
       RETURN
       END
+
 *$ CREATE DT_PICKSRC.FOR
 *COPY DT_PICKSRC
 *
