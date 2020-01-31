@@ -989,12 +989,7 @@ C      CALL DT_PYOUTEP(4)
 * initialize IIMAINN to be -1 in DT_PICKSRC if not in SRC. 
 * otherwise, it would be the index for the SRC partner
 
-      if(IFMPOST .GE. 2) then
-        WRITE(*,*) 'PXF : ', PXF
-        WRITE(*,*) 'PYF : ', PYF
-        WRITE(*,*) 'PZF : ', PZF
-        WRITE(*,*) 'EKF : ', EKF
-        
+      if(IFMPOST .GE. 2) then     
         CALL DT_SPECTRALFUNC(PHKK,NINT(INUMOD),IIMAIN)
       endif
 
