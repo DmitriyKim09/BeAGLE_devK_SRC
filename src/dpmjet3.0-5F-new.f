@@ -5084,8 +5084,8 @@ C            ENDIF
 
       IMPLICIT NONE
 
-      INTEGER B,J,K,NMASS,IIMAIN
-      DOUBLE PRECISION Md, PI
+      INTEGER J,K,NMASS,IIMAIN
+      DOUBLE PRECISION Md, PI, B
       DOUBLE PRECISION EEN, MNUC
       DOUBLE PRECISION ANMT2, SNMT2 ! Active Nucleon OR Spectator Nucleon Transverse mass squared 
 
