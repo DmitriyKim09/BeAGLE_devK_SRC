@@ -5134,12 +5134,14 @@ C       ENDDO
       WRITE(*,*) 'pz: ', PHKK(3,K)
       WRITE(*,*) 'E: ', PHKK(4,K)
       WRITE(*,*) 'mass: ', PHKK(5,K)
+
+      B = PHKK(3,K)
       
       !Set the alpha for spectator nucleon
       MNUC = (PHKK(5,K) + PHKK(5,IIMAIN))/2.0D0
       EEN = SQRT(PHKK(1,K)*PHKK(1,K)+PHKK(2,K)*PHKK(2,K)+
      & PHKK(3,K)*PHKK(3,K) + MNUC*MNUC)
-      ALPHA_SN = 1.0D0 - PHKK(3,K)/EEN
+      ALPHA_SN = 1.0D0 + PHKK(3,K)/EEN
       ALPHA_AN = 2.0D0 - ALPHA_SN
 
       !active nucleon
@@ -5157,7 +5159,7 @@ C       ENDDO
       PHKK(3,K) = (ALPHA_SN*Md)/4.0D0 - SNMT2/(ALPHA_SN*Md)
 
       IF (USERSET.EQ.16) THEN
-               USER1 = PHKK(3,IIMAIN)
+               USER1 = B
                USER2 = PHKK(3,K)
                USER3 = ALPHA_SN
       ENDIF
