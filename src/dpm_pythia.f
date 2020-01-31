@@ -1112,7 +1112,7 @@ C     Here MNUCL is the SPECTATOR (not struck) nucleon mass from D or SRC-pair:
       endif
 
 C... If requested, fix the e+D event kinematics.
-      if (IFMPOST.GT.0) then
+      if (IFMPOST.EQ.1) then
          if (ITZ.NE.1 .OR. IT.NE.2) 
      &        STOP "FATAL: CAN ONLY POST-FIX DEUTERON KINEMATICS"
          if (IFERPY.GT.2) 
