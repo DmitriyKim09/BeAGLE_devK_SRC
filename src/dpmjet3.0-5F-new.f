@@ -5082,9 +5082,10 @@ C            ENDIF
 
       SUBROUTINE DT_SPECTRALFUNC(PHKK,NMASS,IIMAIN)
 
-      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-      SAVE
+      IMPLICIT NONE
 
+      INTEGER B,J,K
+      DOUBLE PRECISION Md
       DOUBLE PRECISION EEN, MNUC
       DOUBLE PRECISION ANMT2, SNMT2 ! Active Nucleon OR Spectator Nucleon Transverse mass squared 
 
