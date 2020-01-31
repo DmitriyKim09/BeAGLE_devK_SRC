@@ -5141,7 +5141,7 @@ C       ENDDO
       MNUC = (PHKK(5,K) + PHKK(5,IIMAIN))/2.0D0
       EEN = SQRT(PHKK(1,K)*PHKK(1,K)+PHKK(2,K)*PHKK(2,K)+
      & PHKK(3,K)*PHKK(3,K) + MNUC*MNUC)
-      ALPHA_SN = 1.0D0 + PHKK(3,K)/EEN
+      ALPHA_SN = 1.0D0 - PHKK(3,K)/EEN
       ALPHA_AN = 2.0D0 - ALPHA_SN
 
       !active nucleon
