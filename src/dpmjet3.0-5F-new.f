@@ -5094,9 +5094,9 @@ C            ENDIF
       !Spectator Nucleon Alpha - ALPHA_SN = 2-ALPHA_AN
       DOUBLE PRECISION PHKK(5,NMASS)
 
-      DOUBLE PRECISION PFERMP(2),PFERMN(2),FERMOD,
-     &                EBINDP(2),EBINDN(2),EPOT(2,210),
-     &                ETACOU(2)
+      DOUBLE PRECISION PFERMP,PFERMN,FERMOD,
+     &                EBINDP,EBINDN,EPOT,
+     &                ETACOU
 
       LOGICAL LFERMI
       INTEGER ICOUL
