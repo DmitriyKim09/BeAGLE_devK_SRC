@@ -1,4 +1,4 @@
-      SUBROUTINE DEUTFIX(NU,Q2,MDEUT,NMASS,IIMAIN)
+      SUBROUTINE DEUTFIX(NU,Q2,MDEUT,IIMAINN)
 C
 C     2018-08-25 Mark D. Baker - Initial Version
 C
@@ -69,7 +69,7 @@ C NOTE: The event history is not corrected in any way, but represents
 C       the original interaction kinematics.
 C
       IMPLICIT NONE
-      DOUBLE PRECISION NU, Q2, MDEUT,NMASS,IIMAIN
+      DOUBLE PRECISION NU, Q2, MDEUT,IIMAINN
 
       include 'beagle.inc'
 C      include "py6strf.inc"   ! Temporary! Just use for debug output
@@ -188,17 +188,9 @@ C     does not participate in the scaling.
 C     - find the spectator
 C     - then scale everything else
 
-      !find index for spectator nucleon for deuteron.
-      DO J=2,NMASS+1
-        IF( J .EQ. IIMAIN ) THEN
-          CONTINUE
-        ELSE 
-          SINDEX = J
-        ENDIF
-      ENDDO
 
       IF (IOULEV(4).GE.2) THEN
-         WRITE (*,*) 'SPECTATOR INDEX ~ ', SINDEX
+         WRITE (*,*) 'SPECTATOR INDEX ~ ', IIMAINN
       ENDIF
 
       NSCLTR=0
