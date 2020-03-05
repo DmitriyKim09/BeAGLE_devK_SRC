@@ -181,12 +181,12 @@ C     Step 2: Iteratively scale the particle 3-momenta until we reach the
 C     correct W value for the gamma*+D reaction products. 
       
 C     Step 2.1, added by Kong Tu:     
-C     This method works in general but it also modifies the spectator of 
-C     the interaction, which we don't want. We continue the scaling for
+C     This method works in general but it also modifies the spectator  
+C     nucleon, which we don't want. We continue the scaling for
 C     each particle except for the spectator. So the spectator nucleon
 C     does not participate in the scaling.
 C     - find the spectator
-C     - then scale everything else
+C     - then scale everything else until the right W
 
 
       IF (IOULEV(4).GE.2) THEN
@@ -211,11 +211,11 @@ C     Zero out our sums. 3-momentum sum should be zero now.
             IF (IOULEV(4).GE.2) THEN
               WRITE (*,*) 'LOOP OVER INDEX ~ ', INDXP(ITRK)
             ENDIF
-            IF( INDXP(ITRK) .NE. SINDEX ) THEN
-              INDEX = INDXP(ITRK)
-            ELSE
-              CONTINUE
-            ENDIF
+C             IF( INDXP(ITRK) .NE. SINDEX ) THEN
+C               INDEX = INDXP(ITRK)
+C             ELSE
+C               CONTINUE
+C             ENDIF
             DO IDIM=1,3
                P(INDEX,IDIM)=ASCALE(NSCLTR)*P(INDEX,IDIM)
             ENDDO
