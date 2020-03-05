@@ -1,4 +1,4 @@
-      SUBROUTINE DEUTFIX(NU,Q2,MDEUT,IIMAINN)
+      SUBROUTINE DEUTFIX(NU,Q2,MDEUT,SINDEX)
 C
 C     2018-08-25 Mark D. Baker - Initial Version
 C
@@ -69,7 +69,7 @@ C NOTE: The event history is not corrected in any way, but represents
 C       the original interaction kinematics.
 C
       IMPLICIT NONE
-      DOUBLE PRECISION NU, Q2, MDEUT,IIMAINN
+      DOUBLE PRECISION NU, Q2, MDEUT
 
       include 'beagle.inc'
 C      include "py6strf.inc"   ! Temporary! Just use for debug output
@@ -190,7 +190,7 @@ C     - then scale everything else
 
 
       IF (IOULEV(4).GE.2) THEN
-         WRITE (*,*) 'SPECTATOR INDEX ~ ', IIMAINN
+         WRITE (*,*) 'SPECTATOR INDEX ~ ', SINDEX
       ENDIF
 
       NSCLTR=0
