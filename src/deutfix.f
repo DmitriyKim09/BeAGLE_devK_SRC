@@ -203,11 +203,11 @@ C     Zero out our sums. 3-momentum sum should be zero now.
          PSUM(4)=ZERO
          S2SUM=ZERO
          DO ITRK=1,NPRTNS
-            IF( INDXP(ITRK) .NE. SINDEX ) THEN
-              INDEX = INDXP(ITRK)
-            ELSE
-              CONTINUE
-            ENDIF
+C             IF( INDXP(ITRK) .NE. SINDEX ) THEN
+C               INDEX = INDXP(ITRK)
+C             ELSE
+C               CONTINUE
+C             ENDIF
             DO IDIM=1,3
                P(INDEX,IDIM)=ASCALE(NSCLTR)*P(INDEX,IDIM)
             ENDDO
