@@ -188,11 +188,6 @@ C     does not participate in the scaling.
 C     - find the spectator
 C     - then scale everything else until the right W
 
-
-      IF (IOULEV(4).GE.2) THEN
-         WRITE (*,*) 'SPECTATOR INDEX ~ ', SINDEX
-      ENDIF
-
       NSCLTR=0
       W2TRY(NSCLTR) = PSUM(4)*PSUM(4)
       DO WHILE (NSCLTR.LT.MAXTRY .AND.
@@ -208,14 +203,11 @@ C     Zero out our sums. 3-momentum sum should be zero now.
          PSUM(4)=ZERO
          S2SUM=ZERO
          DO ITRK=1,NPRTNS
-            IF (IOULEV(4).GE.2) THEN
-              WRITE (*,*) 'LOOP OVER INDEX ~ ', INDXP(ITRK)
+            IF( INDXP(ITRK) .NE. SINDEX ) THEN
+              INDEX = INDXP(ITRK)
+            ELSE
+              CONTINUE
             ENDIF
-C             IF( INDXP(ITRK) .NE. SINDEX ) THEN
-C               INDEX = INDXP(ITRK)
-C             ELSE
-C               CONTINUE
-C             ENDIF
             DO IDIM=1,3
                P(INDEX,IDIM)=ASCALE(NSCLTR)*P(INDEX,IDIM)
             ENDDO
