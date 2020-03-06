@@ -188,6 +188,8 @@ C     does not participate in the scaling.
 C     - find the spectator
 C     - then scale everything else until the right W
 
+! done for the day. with 100 tries and 1e-6 tolorence, no failed but doesn't work
+
       NSCLTR=0
       W2TRY(NSCLTR) = PSUM(4)*PSUM(4)
       DO WHILE (NSCLTR.LT.MAXTRY .AND.
