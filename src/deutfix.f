@@ -203,7 +203,7 @@ C     Zero out our sums. 3-momentum sum should be zero now.
          PSUM(4)=ZERO
          S2SUM=ZERO
          DO ITRK=1,NPRTNS
-            IF ( (IOULEV(4).GE.2 ) THEN
+            IF ( IOULEV(4).GE.2 ) THEN
               WRITE(*,*) 'index of spectator ~ ', SINDEX
             ENDIF
             IF( INDXP(ITRK) .EQ. SINDEX ) THEN
