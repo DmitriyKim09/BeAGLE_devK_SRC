@@ -203,11 +203,12 @@ C     Zero out our sums. 3-momentum sum should be zero now.
          PSUM(4)=ZERO
          S2SUM=ZERO
          DO ITRK=1,NPRTNS
-            IF( INDXP(ITRK) .NE. SINDEX ) THEN
-              INDEX = INDXP(ITRK)
-            ELSE
-              CONTINUE
+            IF ( (IOULEV(4).GE.2 ) THEN
+              WRITE(*,*) 'index of spectator ~ ', SINDEX
             ENDIF
+            IF( INDXP(ITRK) .EQ. SINDEX ) THEN
+              ASCALE(NSCLTR) = 1.0D0
+            ENDIF  
             DO IDIM=1,3
                P(INDEX,IDIM)=ASCALE(NSCLTR)*P(INDEX,IDIM)
             ENDDO
