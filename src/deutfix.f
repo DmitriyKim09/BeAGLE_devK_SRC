@@ -1,4 +1,4 @@
-      SUBROUTINE DEUTFIX(NU,Q2,MDEUT,SINDEX)
+      SUBROUTINE DEUTFIX(NU,Q2,MDEUT)
 C
 C     2018-08-25 Mark D. Baker - Initial Version
 C
@@ -106,7 +106,6 @@ C Local
       LOGICAL W2FAIL
 
       INTEGER INDEX
-      INTEGER SINDEX, J
       DOUBLE PRECISION BETAZ
 
       IF (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) THEN
@@ -114,6 +113,8 @@ C Local
          CALL PYLIST(2)
          WRITE (*,*)
       ENDIF
+
+      WRITE(*,*) 'deuteron mass ~ ', MDEUT
 
 C     Identify the stable particles and assemble W^mu_oops (PSUM)
       NLSCAT = 0
@@ -179,15 +180,6 @@ C     Step 1: Boost into hadronic rest frame and calculate S2SUM,PSUM
 
 C     Step 2: Iteratively scale the particle 3-momenta until we reach the 
 C     correct W value for the gamma*+D reaction products. 
-      
-C     Step 2.1, added by Kong Tu:     
-C     This method works in general but it also modifies the spectator  
-C     nucleon, which we don't want. We continue the scaling for
-C     each particle except for the spectator. So the spectator nucleon
-C     does not participate in the scaling.
-C     - find the spectator
-C     - then scale everything else until the right W
-
       NSCLTR=0
       W2TRY(NSCLTR) = PSUM(4)*PSUM(4)
       DO WHILE (NSCLTR.LT.MAXTRY .AND.
@@ -203,11 +195,7 @@ C     Zero out our sums. 3-momentum sum should be zero now.
          PSUM(4)=ZERO
          S2SUM=ZERO
          DO ITRK=1,NPRTNS
-C             IF( INDXP(ITRK) .NE. SINDEX ) THEN
-C               INDEX = INDXP(ITRK)
-C             ELSE
-C               CONTINUE
-C             ENDIF
+            INDEX = INDXP(ITRK)
             DO IDIM=1,3
                P(INDEX,IDIM)=ASCALE(NSCLTR)*P(INDEX,IDIM)
             ENDDO
