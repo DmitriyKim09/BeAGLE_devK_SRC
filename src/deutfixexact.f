@@ -36,7 +36,7 @@ C      COMMON /PFAUX/ PAUX(4), DPF(4)
 C Local
       DOUBLE PRECISION MJ
       INTEGER NDIM,MAXPRTS
-      PARAMETER (NDIM=4)
+      PARAMETER (NDIM=5)
       PARAMETER (MAXPRTS=20)
       PARAMETER (MJ=3.09688D0)
       DOUBLE PRECISION PPL(MAXPRTS,5),PSPEC(NDIM)
@@ -90,8 +90,10 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
       WRITE(*,*) 'NPARTS ~ ', NPRTNS
       IF (NLSCAT.NE.1) 
      &     STOP "ERROR! BAD EVENT CONFIG. Scattered leptons .ne. 1"
-      IF (NPRTNS.LT.2)
+      IF (NPRTNS.NE.2)
      &     STOP "ERROR! BAD EVENT CONFIG. .LT. two particles"
+
+      WRITE(*,*) 'NPARTS ~ ', NPRTNS
 
 C     a quick and dirty way of getting struck mass
       IF( MSPEC < 0.939D0 ) THEN
@@ -102,10 +104,17 @@ C     a quick and dirty way of getting struck mass
 
       QZKZ = SQRT(NU**2+Q2)-PSPEC(3)
       NUMN = NU - PSPEC(4)
-      PX = PPL(1,1)
-      PY = PPL(1,2)
-      JX = PPL(2,1)
-      JY = PPL(2,2)
+      IF( ABS(PPL(1,5)-MJ) < 1.0D-3 ) THEN
+        JX = PPL(1,1)
+        JY = PPL(1,2)
+        PX = PPL(2,1)
+        PY = PPL(2,2)
+      ELSE
+        JX = PPL(2,1)
+        JY = PPL(2,2)
+        PX = PPL(1,1)
+        PY = PPL(1,2)
+      ENDIF
 
       PZ = (QZKZ*(-JX**2 - JY**2 - MJ**2 + MSTRU**2 + (MDEUT + NUMN)**2 
      &   + PX**2 + PY**2 - 
@@ -128,6 +137,7 @@ C     a quick and dirty way of getting struck mass
      & 2*JX**2*(JY**2 + MJ**2 - MSTRU**2 - (MDEUT + NUMN)**2 - 
      & PX**2 - PY**2 + 
      &    QZKZ**2))))/(2.*(MDEUT + NUMN - QZKZ)*(MDEUT + NUMN + QZKZ))
+
 
       PPL(1,3) = PZ
       PPL(1,4) = SQRT(PX**2+PY**2+PZ**2+P(INDXP(1),5)**2)
@@ -154,6 +164,18 @@ C     a quick and dirty way of getting struck mass
 
       PPL(2,3) = JZ
       PPL(2,4) = SQRT(JX**2+JY**2+JZ**2+P(INDXP(2),5)**2)
+
+      IF( ABS(PPL(1,5)-MJ) < 1.0D-3 ) THEN
+        PPL(1,3) = JZ
+        PPL(1,4) = SQRT(JX**2+JY**2+JZ**2+P(INDXP(1),5)**2)
+        PPL(2,3) = PZ
+        PPL(2,4) = SQRT(PX**2+PY**2+PZ**2+P(INDXP(2),5)**2)
+      ELSE
+        PPL(2,3) = JZ
+        PPL(2,4) = SQRT(JX**2+JY**2+JZ**2+P(INDXP(2),5)**2)
+        PPL(1,3) = PZ
+        PPL(1,4) = SQRT(PX**2+PY**2+PZ**2+P(INDXP(1),5)**2)
+      ENDIF
 
       DO IDIM=1,NDIM
         P(INDXP(1),IDIM)=PPL(1,IDIM)
