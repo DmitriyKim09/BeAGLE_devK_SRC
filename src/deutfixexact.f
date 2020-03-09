@@ -45,7 +45,8 @@ C Local
       DOUBLE PRECISION JX,JY,JZ
       DOUBLE PRECISION MSTRU, MSPEC
 
-      INTEGER NPRTNS,NLSCAT,IDIM,ITRK
+      INTEGER JNDEX,PNDEX
+      INTEGER NPRTNS,NLSCAT,IDIM,ITRK,JTRK
       INTEGER INDXP(MAXPRTS)
       INTEGER SINDEX
 
@@ -71,7 +72,6 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
                   NPRTNS=NPRTNS+1
                   IF (NPRTNS.GT.MAXPRTS) 
      &              STOP('DEUTFIX: FATAL ERROR. Too many partons')
-           
                   INDXP(NPRTNS)=ITRK
                   DO IDIM=1,NDIM
                     PPL(NPRTNS,IDIM)=P(ITRK,IDIM)
@@ -87,10 +87,9 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
             ENDIF
          ENDIF
       ENDDO
-      WRITE(*,*) 'NPARTS ~ ', NPRTNS
       IF (NLSCAT.NE.1) 
      &     STOP "ERROR! BAD EVENT CONFIG. Scattered leptons .ne. 1"
-      IF (NPRTNS.NE.2)
+      IF (NPRTNS.LT.2)
      &     STOP "ERROR! BAD EVENT CONFIG. .LT. two particles"
 
       WRITE(*,*) 'NPARTS ~ ', NPRTNS
@@ -104,17 +103,30 @@ C     a quick and dirty way of getting struck mass
 
       QZKZ = SQRT(NU**2+Q2)-PSPEC(3)
       NUMN = NU - PSPEC(4)
-      IF( ABS(PPL(1,5)-MJ) < 1.0D-3 ) THEN
-        JX = PPL(1,1)
-        JY = PPL(1,2)
-        PX = PPL(2,1)
-        PY = PPL(2,2)
-      ELSE
-        JX = PPL(2,1)
-        JY = PPL(2,2)
-        PX = PPL(1,1)
-        PY = PPL(1,2)
-      ENDIF
+
+C     Initialize px,py,jx,jy
+      PX = 0D0
+      PY = 0D0
+      JX = 0D0
+      JY = 0D0
+
+      DO JTRK=1,NPRTNS
+        IF( ABS(PPL(JTRK,5)-MJ) .LT. 1.0D-3 ) THEN
+          JX = PPL(JTRK,1)
+          JY = PPL(JTRK,2)
+          JNDEX = JTRK
+        ENDIF
+        IF( ABS(PPL(JTRK,5)-MSTRU) .LT. 1.0D-3 ) THEN
+          PX = PPL(JTRK,1)
+          PY = PPL(JTRK,2)
+          PNDEX = JTRK
+        ENDIF
+      ENDDO
+      
+      IF( (PX .EQ. 0D0) .OR. (JX .EQ. 0D0) )
+     &   STOP "No struck nucelon or no jpsi" 
+
+C     solution for struck nucleon z momentum
 
       PZ = (QZKZ*(-JX**2 - JY**2 - MJ**2 + MSTRU**2 + (MDEUT + NUMN)**2 
      &   + PX**2 + PY**2 - 
@@ -138,9 +150,7 @@ C     a quick and dirty way of getting struck mass
      & PX**2 - PY**2 + 
      &    QZKZ**2))))/(2.*(MDEUT + NUMN - QZKZ)*(MDEUT + NUMN + QZKZ))
 
-
-      PPL(1,3) = PZ
-      PPL(1,4) = SQRT(PX**2+PY**2+PZ**2+P(INDXP(1),5)**2)
+C     solution for Jpsi z momentum
 
       JZ = (QZKZ*(JX**2 + JY**2 + MJ**2 - MSTRU**2 + (MDEUT + NUMN)**2  
      & - PX**2 - PY**2 - QZKZ**2) + Sqrt((MDEUT + NUMN)**2*
@@ -162,24 +172,14 @@ C     a quick and dirty way of getting struck mass
      & - PY**2 + QZKZ**2))))/(2.*(MDEUT + NUMN - QZKZ)*
      & (MDEUT + NUMN + QZKZ))
 
-      PPL(2,3) = JZ
-      PPL(2,4) = SQRT(JX**2+JY**2+JZ**2+P(INDXP(2),5)**2)
-
-      IF( ABS(PPL(1,5)-MJ) < 1.0D-3 ) THEN
-        PPL(1,3) = JZ
-        PPL(1,4) = SQRT(JX**2+JY**2+JZ**2+P(INDXP(1),5)**2)
-        PPL(2,3) = PZ
-        PPL(2,4) = SQRT(PX**2+PY**2+PZ**2+P(INDXP(2),5)**2)
-      ELSE
-        PPL(2,3) = JZ
-        PPL(2,4) = SQRT(JX**2+JY**2+JZ**2+P(INDXP(2),5)**2)
-        PPL(1,3) = PZ
-        PPL(1,4) = SQRT(PX**2+PY**2+PZ**2+P(INDXP(1),5)**2)
-      ENDIF
-
+      PPL(JNDEX,3) = JZ
+      PPL(JNDEX,4) = SQRT(JX**2+JY**2+JZ**2+P(INDXP(JNDEX),5)**2)
+      PPL(PNDEX,3) = PZ
+      PPL(PNDEX,4) = SQRT(PX**2+PY**2+PZ**2+P(INDXP(PNDEX),5)**2)
+    
       DO IDIM=1,NDIM
-        P(INDXP(1),IDIM)=PPL(1,IDIM)
-        P(INDXP(2),IDIM)=PPL(2,IDIM)
+        P(INDXP(JNDEX),IDIM)=PPL(JNDEX,IDIM)
+        P(INDXP(PNDEX),IDIM)=PPL(PNDEX,IDIM)
       ENDDO
       
       RETURN
