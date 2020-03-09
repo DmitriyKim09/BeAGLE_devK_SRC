@@ -123,8 +123,8 @@ C     Initialize px,py,jx,jy
         ENDIF
       ENDDO
       
-      IF( (PX .EQ. 0.0D0) .OR. (JX .EQ. 0.0D0) )
-     &   STOP "No struck nucelon or no jpsi" 
+C       IF( (PX .EQ. 0.0D0) .OR. (JX .EQ. 0.0D0) )
+C      &   STOP "No struck nucelon or no jpsi" 
 
 C     solution for struck nucleon z momentum
 
