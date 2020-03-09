@@ -76,12 +76,15 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
                   DO IDIM=1,NDIM
                     PPL(NPRTNS,IDIM)=P(ITRK,IDIM)
                   ENDDO
+                  WRITE(*,*)'MAIN PARTICLE: ',P(ITRK,5)
                ELSE
                   DO IDIM=1,NDIM
                     PSPEC(IDIM)=P(ITRK,IDIM)
                   ENDDO  
                   MSPEC = P(ITRK,5)
+                  WRITE(*,*)'SPECTATOR PARTICLE: ',MSPEC
                ENDIF
+               WRITE(*,*) 'NPARTS ~ ', NPRTNS
             ENDIF
          ENDIF
       ENDDO
