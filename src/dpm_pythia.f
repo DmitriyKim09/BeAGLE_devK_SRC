@@ -1151,8 +1151,8 @@ C...  Note: Can't fill V(N,I) yet or PYROBO will boost it around.
          VALNU = 0.5D0*VINT(309)*(VINT(302)-VINT(4)**2-VINT(303)**2)
      &        /VINT(4)
          QQ=VINT(307)
-         ! CALL DEUTFIX(VALNU,QQ,AZMASS(2,1,1))
-         CALL DEUTFIXEXACT(VALNU,QQ,AZMASS(2,1,1),N)
+         CALL DEUTFIX(VALNU,QQ,AZMASS(2,1,1))
+         ! CALL DEUTFIXEXACT(VALNU,QQ,AZMASS(2,1,1),N)
       endif
 
 C
