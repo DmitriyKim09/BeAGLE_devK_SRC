@@ -84,10 +84,10 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
                   MSPEC = P(ITRK,5)
                   WRITE(*,*)'SPECTATOR PARTICLE: ',MSPEC
                ENDIF
-               WRITE(*,*) 'NPARTS ~ ', NPRTNS
             ENDIF
          ENDIF
       ENDDO
+      WRITE(*,*) 'NPARTS ~ ', NPRTNS
       IF (NLSCAT.NE.1) 
      &     STOP "ERROR! BAD EVENT CONFIG. Scattered leptons .ne. 1"
       IF (NPRTNS.LT.2)
