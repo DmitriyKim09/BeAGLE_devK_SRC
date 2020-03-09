@@ -1,14 +1,6 @@
       SUBROUTINE DEUTFIXEXACT(NU,Q2,MDEUT,SINDEX)
 C
-C     2018-08-25 Mark D. Baker - Initial Version
-C
-C     Explicit Input: NU, Q2 - event kinematics
-C                     MDEUT - Deuteron Mass
-C     Impicit I/O:   An event in /PYJETS/ in the ion rest frame
-C                     INCLUDING the spectator nucleon.
-C
-C NOTE: The event history is not corrected in any way, but represents
-C       the original interaction kinematics.
+C     2020-03-09 added by Kong Tu
 C
       IMPLICIT NONE
       DOUBLE PRECISION NU, Q2, MDEUT
@@ -58,11 +50,10 @@ C Local
          WRITE (*,*)
       ENDIF
 
-C     Identify the stable particles and assemble W^mu_oops (PSUM)
       NLSCAT = 0
       NPRTNS = 0
       DO IDIM=1,NDIM
-         PSPEC(IDIM)=ZERO       ! sum p^mu for all stable except e'
+         PSPEC(IDIM)=ZERO     
       ENDDO
       DO ITRK=1,N
          IF(K(ITRK,1).EQ.1 .OR. K(ITRK,1).EQ.2) THEN
@@ -73,18 +64,17 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
                IF( ITRK .NE. SINDEX ) THEN
                   NPRTNS=NPRTNS+1
                   IF (NPRTNS.GT.MAXPRTS) 
-     &              STOP('DEUTFIX: FATAL ERROR. Too many partons')
+     &              STOP('DEUTFIXEXACT: FATAL ERROR. Too many partons')
                   INDXP(NPRTNS)=ITRK
                   DO IDIM=1,NDIM
                     PPL(NPRTNS,IDIM)=P(ITRK,IDIM)
                   ENDDO
-                  WRITE(*,*)'MAIN PARTICLE: ',P(ITRK,5)
+C     identify spectator     
                ELSE
                   DO IDIM=1,NDIM
                     PSPEC(IDIM)=P(ITRK,IDIM)
                   ENDDO  
                   MSPEC = P(ITRK,5)
-                  WRITE(*,*)'SPECTATOR PARTICLE: ',MSPEC
                ENDIF
             ENDIF
          ENDIF
@@ -93,8 +83,6 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
      &     STOP "ERROR! BAD EVENT CONFIG. Scattered leptons .ne. 1"
       IF (NPRTNS.LT.2)
      &     STOP "ERROR! BAD EVENT CONFIG. Fewer than two particles"
-
-      WRITE(*,*) 'NPARTS ~ ', NPRTNS
 
 C     a quick and dirty way of getting struck mass
       IF( MSPEC < 0.939D0 ) THEN
@@ -176,7 +164,9 @@ C     solution for Jpsi z momentum
       PPL(JNDEX,4) = SQRT(JX**2+JY**2+JZ**2+P(INDXP(JNDEX),5)**2)
       PPL(PNDEX,3) = PZ
       PPL(PNDEX,4) = SQRT(PX**2+PY**2+PZ**2+P(INDXP(PNDEX),5)**2)
-    
+
+C     only modify Jpsi and struck nucleon
+
       DO IDIM=1,NDIM
         P(INDXP(JNDEX),IDIM)=PPL(JNDEX,IDIM)
         P(INDXP(PNDEX),IDIM)=PPL(PNDEX,IDIM)
