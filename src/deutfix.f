@@ -182,7 +182,6 @@ C     Step 1: Boost into hadronic rest frame and calculate S2SUM,PSUM
       DO ITRK=1,NPRTNS
          INDEX = INDXP(ITRK)
          CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
-         
          IF( INDEX .EQ. SINDEX ) THEN
             WRITE (*,*) 'DEUTFIX: spectator DO NOT COUNT'
          ELSE
@@ -192,7 +191,6 @@ C     Step 1: Boost into hadronic rest frame and calculate S2SUM,PSUM
               PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
            ENDDO
          ENDIF
-           
       ENDDO
 
       IF (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) THEN
@@ -233,7 +231,7 @@ C     Zero out our sums. 3-momentum sum should be zero now.
          DO ITRK=1,NPRTNS 
             DO IDIM=1,3
                IF( INDXP(ITRK) .EQ. SINDEX ) THEN
-                  P(INDEX,IDIM)=1.0D0*P(INDEX,IDIM)
+                  WRITE(*,*) 'DO NOTHING FOR SPECTATOR'
                ELSE
                   P(INDEX,IDIM)=ASCALE(NSCLTR)*P(INDEX,IDIM)
                ENDIF
@@ -311,7 +309,7 @@ C         USER3=DBLE(NPRTNS)
       ENDIF
 
 C     Step 3: Boost back into the ion rest frame and calculate PSUM
-      BETAZ = ONE/SQRT(ONE + W2TRY(NSCLTR)/(Q2+NU*NU))
+      BETAZ=ONE/SQRT(ONE+W2TRY(NSCLTR)/(SQRT(NU**2+Q2**2)-PSPEC(3))**2))
       DO IDIM=1,NDIM
          PSUM(IDIM)=ZERO        ! sum p^mu for all stable except e'
       ENDDO
