@@ -35,7 +35,7 @@ C      COMMON /PFAUX/ PAUX(4), DPF(4)
 
 C Local
       DOUBLE PRECISION MJ
-      INTEGER NDIM
+      INTEGER NDIM,MAXPRTS
       PARAMETER (NDIM=4)
       PARAMETER (MAXPRTS=20)
       PARAMETER (MJ=3.09688D0)
@@ -45,7 +45,7 @@ C Local
       DOUBLE PRECISION JX,JY,JZ
       DOUBLE PRECISION MSTRU, MSPEC
 
-      INTEGER NPRTNS,NLSCAT,IDIM,ITRK,MAXPRTS
+      INTEGER NPRTNS,NLSCAT,IDIM,ITRK
       INTEGER INDXP(MAXPRTS)
       INTEGER SINDEX
 
@@ -59,7 +59,7 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
       NLSCAT = 0
       NPRTNS = 0
       DO IDIM=1,NDIM
-         PSUM(IDIM)=ZERO       ! sum p^mu for all stable except e'
+         PSPEC(IDIM)=ZERO       ! sum p^mu for all stable except e'
       ENDDO
       DO ITRK=1,N
          IF(K(ITRK,1).EQ.1 .OR. K(ITRK,1).EQ.2) THEN
