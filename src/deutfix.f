@@ -134,14 +134,14 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
                INDXP(NPRTNS)=ITRK
                
                IF( INDXP(NPRTNS) .EQ. SINDEX ) THEN
-                    WRITE (*,*) 'DEUTFIX: spectator new PSEC'
-                    DO IDIM=1,NDIM
-                       PSPEC(IDIM)=P(ITRK,IDIM)
-                 ENDDO
+                  WRITE (*,*) 'DEUTFIX: spectator new PSEC'
+                  DO IDIM=1,NDIM
+                    PSPEC(IDIM)=P(ITRK,IDIM)
+                  ENDDO
                ELSE
-                 DO IDIM=1,NDIM
-                       PSUM(IDIM)=PSUM(IDIM)+P(ITRK,IDIM)
-                 ENDDO
+                  DO IDIM=1,NDIM
+                    PSUM(IDIM)=PSUM(IDIM)+P(ITRK,IDIM)
+                  ENDDO
                ENDIF
             
             ENDIF
@@ -157,10 +157,10 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
       WRAW = SQRT(W2RAW)
 
 C     Make New WFRAW without spectator
-      WFRAW(1) = 0.0D0 + PSPEC(1)
-      WFRAW(2) = 0.0D0 + PSPEC(2)
-      WFRAW(3) = SQRT(NU**2+Q2**2) + PSPEC(3)
-      WFRAW(4) = NU+MDEUT + PSPEC(4)
+      WFRAW(1) = 0.0D0 - PSPEC(1)
+      WFRAW(2) = 0.0D0 - PSPEC(2)
+      WFRAW(3) = SQRT(NU**2+Q2**2) - PSPEC(3)
+      WFRAW(4) = NU+MDEUT - PSPEC(4)
 
 C     W2F = 2.0D0*MDEUT*NU + MDEUT*MDEUT - Q2
       W2F=WFRAW(4)**2-WFRAW(3)**2-WFRAW(2)**2-WFRAW(1)**2
@@ -181,10 +181,10 @@ C     Step 1: Boost into hadronic rest frame and calculate S2SUM,PSUM
       ENDDO
       DO ITRK=1,NPRTNS
          INDEX = INDXP(ITRK)
-         CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
          IF( INDEX .EQ. SINDEX ) THEN
-            WRITE (*,*) 'DEUTFIX: spectator DO NOT COUNT'
+            WRITE (*,*) 'DEUTFIX: spectator DO NOT BOOST'
          ELSE
+           CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
            S2SUM = S2SUM + 
      &        (P(INDEX,4)-P(INDEX,5))*(ONE+P(INDEX,5)/P(INDEX,4))
            DO IDIM=1,NDIM
