@@ -309,7 +309,8 @@ C         USER3=DBLE(NPRTNS)
       ENDIF
 
 C     Step 3: Boost back into the ion rest frame and calculate PSUM
-      BETAZ=ONE/SQRT(ONE+W2TRY(NSCLTR)/(SQRT(NU**2+Q2**2)-PSPEC(3))**2))
+      BETAZ = ONE/SQRT(ONE + W2TRY(NSCLTR)/
+     & (SQRT(NU**2+Q2**2) - PSPEC(3))**2))
       DO IDIM=1,NDIM
          PSUM(IDIM)=ZERO        ! sum p^mu for all stable except e'
       ENDDO
