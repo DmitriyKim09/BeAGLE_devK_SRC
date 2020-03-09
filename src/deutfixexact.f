@@ -87,8 +87,8 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
       ENDDO
       IF (NLSCAT.NE.1) 
      &     STOP "ERROR! BAD EVENT CONFIG. Scattered leptons .ne. 1"
-      IF (NPRTNS.NE.2)
-     &     STOP "ERROR! BAD EVENT CONFIG. NOT .EQ. two particles"
+      IF (NPRTNS.LT.2)
+     &     STOP "ERROR! BAD EVENT CONFIG. .LT. two particles"
 
 C     a quick and dirty way of getting struck mass
       IF( MSPEC < 0.939D0 ) THEN
