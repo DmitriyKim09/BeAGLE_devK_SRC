@@ -94,12 +94,12 @@ C      COMMON /PFAUX/ PAUX(4), DPF(4)
 
 C Local
       DOUBLE PRECISION EPSPF
-      PARAMETER (EPSPF=1.0D-6)
+      PARAMETER (EPSPF=1.0D-9)
       INTEGER MAXTRY, MAXPRTS,NDIM
-      PARAMETER (MAXTRY=100)
+      PARAMETER (MAXTRY=10)
       PARAMETER (MAXPRTS=20)
       PARAMETER (NDIM=4)
-      DOUBLE PRECISION WFRAW(NDIM),PSPEC(NDIM), QZ2
+      DOUBLE PRECISION WFRAW(NDIM),PSPEC(NDIM),QZ2
       DOUBLE PRECISION W2F, W2TRY(0:MAXTRY), PSUM(NDIM), W2RAW, WRAW
       DOUBLE PRECISION ASCALE(MAXTRY), ASCLFL
       DOUBLE PRECISION S2SUM 
@@ -132,7 +132,6 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
                IF (NPRTNS.GT.MAXPRTS) 
      &              STOP('DEUTFIX: FATAL ERROR. Too many partons')
                INDXP(NPRTNS)=ITRK
-               
                IF( INDXP(NPRTNS) .EQ. SINDEX ) THEN
                   WRITE (*,*) 'DEUTFIX: spectator new PSEC'
                   DO IDIM=1,NDIM
@@ -155,15 +154,7 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
 
       W2RAW = (PSUM(4)-PSUM(3))*(PSUM(4)+PSUM(3))-PSUM(1)**2-PSUM(2)**2
       WRAW = SQRT(W2RAW)
-
-C     Make New WFRAW without spectator
-      WFRAW(1) = 0.0D0 - PSPEC(1)
-      WFRAW(2) = 0.0D0 - PSPEC(2)
-      WFRAW(3) = SQRT(NU**2+Q2**2) - PSPEC(3)
-      WFRAW(4) = NU+MDEUT - PSPEC(4)
-
-C     W2F = 2.0D0*MDEUT*NU + MDEUT*MDEUT - Q2
-      W2F=WFRAW(4)**2-WFRAW(3)**2-WFRAW(2)**2-WFRAW(1)**2
+      W2F = 2.0D0*MDEUT*NU + MDEUT*MDEUT - Q2
       
       IF (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) THEN
          WRITE(*,*) 'W^mu_full (correct): {0, 0, ', SQRT(NU*NU+Q2),';',
@@ -181,16 +172,12 @@ C     Step 1: Boost into hadronic rest frame and calculate S2SUM,PSUM
       ENDDO
       DO ITRK=1,NPRTNS
          INDEX = INDXP(ITRK)
-         IF( INDEX .EQ. SINDEX ) THEN
-            WRITE (*,*) 'DEUTFIX: spectator DO NOT BOOST'
-         ELSE
-           CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
-           S2SUM = S2SUM + 
-     &        (P(INDEX,4)-P(INDEX,5))*(ONE+P(INDEX,5)/P(INDEX,4))
-           DO IDIM=1,NDIM
-              PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
-           ENDDO
-         ENDIF
+         CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
+         S2SUM = S2SUM + 
+     &      (P(INDEX,4)-P(INDEX,5))*(ONE+P(INDEX,5)/P(INDEX,4))
+         DO IDIM=1,NDIM
+            PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
+         ENDDO
       ENDDO
 
       IF (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) THEN
@@ -211,8 +198,6 @@ C     each particle except for the spectator. So the spectator nucleon
 C     does not participate in the scaling.
 C     - find the spectator
 C     - then scale everything else until the right W
-
-! done for the day. with 100 tries and 1e-6 tolorence, no failed but doesn't work
 
       NSCLTR=0
       W2TRY(NSCLTR) = PSUM(4)*PSUM(4)
