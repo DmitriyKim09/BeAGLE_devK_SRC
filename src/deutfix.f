@@ -157,10 +157,10 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
       WRAW = SQRT(W2RAW)
 
 C     Make New WFRAW without spectator
-      WFRAW(1) = 0.0D0 - PSPEC(1)
-      WFRAW(2) = 0.0D0 - PSPEC(2)
-      WFRAW(3) = SQRT(NU**2+Q2**2) - PSPEC(3)
-      WFRAW(4) = NU+MDEUT - PSPEC(4)
+      WFRAW(1) = 0.0D0 + PSPEC(1)
+      WFRAW(2) = 0.0D0 + PSPEC(2)
+      WFRAW(3) = SQRT(NU**2+Q2**2) + PSPEC(3)
+      WFRAW(4) = NU+MDEUT + PSPEC(4)
 
 C     W2F = 2.0D0*MDEUT*NU + MDEUT*MDEUT - Q2
       W2F=WFRAW(4)**2-WFRAW(3)**2-WFRAW(2)**2-WFRAW(1)**2
@@ -309,7 +309,7 @@ C         USER3=DBLE(NPRTNS)
       ENDIF
 
 C     Step 3: Boost back into the ion rest frame and calculate PSUM
-      QZ2 = (SQRT(NU**2+Q2**2)-PSPEC(3))**2
+      QZ2 = (SQRT(NU**2+Q2**2)+PSPEC(3))**2
       BETAZ = ONE/SQRT(ONE + W2TRY(NSCLTR)/QZ2 )
       DO IDIM=1,NDIM
          PSUM(IDIM)=ZERO        ! sum p^mu for all stable except e'
