@@ -34,16 +34,18 @@ C      COMMON /PFAUX/ PAUX(4), DPF(4)
       integer NEVENT, ICASCA
 
 C Local
-      DOUBLE PRECISION MJ
+      DOUBLE PRECISION MJ, MP, MN
       INTEGER NDIM,MAXPRTS
       PARAMETER (NDIM=5)
       PARAMETER (MAXPRTS=20)
       PARAMETER (MJ=3.09688D0)
+      PARAMETER (MP=0.93827D0)
+      PARAMETER (MN=0.93957D0)
       DOUBLE PRECISION PPL(MAXPRTS,5),PSPEC(NDIM)
       DOUBLE PRECISION QZKZ,NUMN
       DOUBLE PRECISION PX,PY,PZ
       DOUBLE PRECISION JX,JY,JZ
-      DOUBLE PRECISION MSTRU, MSPEC
+      DOUBLE PRECISION MSTRU,MSPEC
 
       INTEGER JNDEX,PNDEX
       INTEGER NPRTNS,NLSCAT,IDIM,ITRK,JTRK
@@ -90,18 +92,18 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
       IF (NLSCAT.NE.1) 
      &     STOP "ERROR! BAD EVENT CONFIG. Scattered leptons .ne. 1"
       IF (NPRTNS.LT.2)
-     &     STOP "ERROR! BAD EVENT CONFIG. .LT. two particles"
+     &     STOP "ERROR! BAD EVENT CONFIG. Fewer than two particles"
 
       WRITE(*,*) 'NPARTS ~ ', NPRTNS
 
 C     a quick and dirty way of getting struck mass
       IF( MSPEC < 0.939D0 ) THEN
-        MSTRU = 0.93957D0
+        MSTRU = MN
       ELSE
-        MSTRU = 0.93827D0
+        MSTRU = MP
       ENDIF
 
-      QZKZ = SQRT(NU**2+Q2)-PSPEC(3)
+      QZKZ = SQRT(NU**2+Q2) - PSPEC(3)
       NUMN = NU - PSPEC(4)
 
 C     Initialize px,py,jx,jy
@@ -110,6 +112,7 @@ C     Initialize px,py,jx,jy
       JX = 0.0D0
       JY = 0.0D0
 
+C     Find Jpsi and struck nucleon
       DO JTRK=1,NPRTNS
         IF( ABS(PPL(JTRK,5)-MJ) .LT. 0.0001D0 ) THEN
           JX = PPL(JTRK,1)
@@ -122,9 +125,6 @@ C     Initialize px,py,jx,jy
           PNDEX = JTRK
         ENDIF
       ENDDO
-      
-C       IF( (PX .EQ. 0.0D0) .OR. (JX .EQ. 0.0D0) )
-C      &   STOP "No struck nucelon or no jpsi" 
 
 C     solution for struck nucleon z momentum
 
