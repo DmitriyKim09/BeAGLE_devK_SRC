@@ -152,7 +152,9 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
      &     STOP "ERROR! BAD EVENT CONFIG. Fewer than two particles"
 
 
-      W2RAW = (PSUM(4)-PSUM(3))*(PSUM(4)+PSUM(3))-PSUM(1)**2-PSUM(2)**2
+      W2RAW = ((PSUM(4)+PSPEC(4)) - (PSUM(3)+PSPEC(3)))
+     & *((PSUM(4)+PSPEC(4)) + (PSUM(3)+PSPEC(3))) 
+     & - (PSUM(1)+PSPEC(1))**2 - (PSUM(2)+PSPEC(2))**2
       WRAW = SQRT(W2RAW)
       W2F = 2.0D0*MDEUT*NU + MDEUT*MDEUT - Q2
       W2SPEC=(PSPEC(4)-PSPEC(3))*(PSPEC(4)+PSPEC(3))
@@ -176,14 +178,14 @@ C     Step 1: Boost into hadronic rest frame and calculate S2SUM,PSUM
       DO ITRK=1,NPRTNS
          INDEX = INDXP(ITRK)
          CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
+         S2SUM = S2SUM + 
+     &      (P(INDEX,4)-P(INDEX,5))*(ONE+P(INDEX,5)/P(INDEX,4))
          IF( INDXP(NPRTNS) .EQ. SINDEX ) THEN
             WRITE (*,*) 'Spectator in new frame j+p'
             DO IDIM=1,NDIM
               PSPEC(IDIM)=P(INDEX,IDIM)
             ENDDO
-         ELSE
-           S2SUM = S2SUM + 
-     &      (P(INDEX,4)-P(INDEX,5))*(ONE+P(INDEX,5)/P(INDEX,4))
+         ELSE  
            DO IDIM=1,NDIM
               PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
            ENDDO
@@ -224,12 +226,12 @@ C     Zero out our sums. 3-momentum sum should be zero now.
          PSUM(4)=ZERO
          S2SUM=ZERO
          DO ITRK=1,NPRTNS 
+            IF( INDXP(ITRK) .EQ. SINDEX ) THEN
+                WRITE(*,*) 'DO NOTHING FOR SPECTATOR'
+                CONTINUE
+            ENDIF
             DO IDIM=1,3
-               IF( INDXP(ITRK) .EQ. SINDEX ) THEN
-                  WRITE(*,*) 'DO NOTHING FOR SPECTATOR'
-               ELSE
-                  P(INDEX,IDIM)=ASCALE(NSCLTR)*P(INDEX,IDIM)
-               ENDIF
+                P(INDEX,IDIM)=ASCALE(NSCLTR)*P(INDEX,IDIM)
             ENDDO
             P(INDEX,4)= SQRT( P(INDEX,5)**2+
      &           (P(INDEX,1)**2+P(INDEX,2)**2+P(INDEX,3)**2))
@@ -237,6 +239,7 @@ C     Zero out our sums. 3-momentum sum should be zero now.
             S2SUM = S2SUM + (P(INDEX,4)-P(INDEX,5))
      &           *(ONE+P(INDEX,5)/P(INDEX,4))
          ENDDO
+         S2SUM = S2SUM + (PSEC(1)**2+PSEC(2)**2+PSEC(3)**2)/PSEC(4)
          W2TRY(NSCLTR) = PSUM(4)*PSUM(4) + W2SPEC
       
          IF ( (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) .OR.
@@ -310,14 +313,10 @@ C     Step 3: Boost back into the ion rest frame and calculate PSUM
       ENDDO
       DO ITRK=1,NPRTNS
          INDEX = INDXP(ITRK)
-         IF( INDEX .EQ. SINDEX) THEN
-          WRITE(*,*)'DO NOTHING'
-         ELSE
-           CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
-           DO IDIM=1,NDIM
-              PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
-           ENDDO
-         ENDIF
+         CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
+         DO IDIM=1,NDIM
+            PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
+         ENDDO
       ENDDO
 
       W2RAW = (PSUM(4)-PSUM(3))*(PSUM(4)+PSUM(3))+PSUM(1)**2+PSUM(2)**2
