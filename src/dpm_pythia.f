@@ -1154,7 +1154,7 @@ C...  Note: Can't fill V(N,I) yet or PYROBO will boost it around.
          if( IFMPOST .EQ. 1 ) then
             CALL DEUTFIX(VALNU,QQ,AZMASS(2,1,1))
          else if( IFMPOST .EQ. 2 ) then   
-            ! CALL DEUTFIXEXACT(VALNU,QQ,AZMASS(2,1,1),N)
+            CALL DEUTFIXEXACT(VALNU,QQ,AZMASS(2,1,1),N)
          else
          ! do nothing now.
          WRITE(*,*) "No IFMPOST = 3 OPTION implemented"
