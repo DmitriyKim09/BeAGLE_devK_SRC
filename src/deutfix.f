@@ -316,10 +316,14 @@ C     Step 3: Boost back into the ion rest frame and calculate PSUM
       ENDDO
       DO ITRK=1,NPRTNS
          INDEX = INDXP(ITRK)
-         CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
-         DO IDIM=1,NDIM
-            PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
-         ENDDO
+         IF( INDEX .EQ. SINDEX) THEN
+          WRITE(*,*)'DO NOTHING'
+         ELSE
+           CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
+           DO IDIM=1,NDIM
+              PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
+           ENDDO
+         ENDIF
       ENDDO
 
       W2RAW = (PSUM(4)-PSUM(3))*(PSUM(4)+PSUM(3))+PSUM(1)**2+PSUM(2)**2
