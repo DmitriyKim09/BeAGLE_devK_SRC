@@ -1118,7 +1118,7 @@ C     Here MNUCL is the SPECTATOR (not struck) nucleon mass from D or SRC-pair:
 
 C... If requested, fix the e+D event kinematics.
       ! change to .EQ. 1 instead of .GE. 1
-      if (IFMPOST.EQ.1) then
+      if (IFMPOST.GE.0) then
          if (ITZ.NE.1 .OR. IT.NE.2) 
      &        STOP "FATAL: CAN ONLY POST-FIX DEUTERON KINEMATICS"
          if (IFERPY.GT.2) 
@@ -1151,8 +1151,14 @@ C...  Note: Can't fill V(N,I) yet or PYROBO will boost it around.
          VALNU = 0.5D0*VINT(309)*(VINT(302)-VINT(4)**2-VINT(303)**2)
      &        /VINT(4)
          QQ=VINT(307)
-         CALL DEUTFIX(VALNU,QQ,AZMASS(2,1,1))
-         ! CALL DEUTFIXEXACT(VALNU,QQ,AZMASS(2,1,1),N)
+         if( IFMPOST .EQ. 1 ) then
+            CALL DEUTFIX(VALNU,QQ,AZMASS(2,1,1))
+         else if( IFMPOST .EQ. 2 ) then   
+            CALL DEUTFIXEXACT(VALNU,QQ,AZMASS(2,1,1),N)
+         else
+         ! do nothing now.
+         WRITE(*,*) "No IFMPOST = 3 OPTION implemented"
+         endif 
       endif
 
 C
