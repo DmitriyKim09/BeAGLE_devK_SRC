@@ -99,6 +99,7 @@ C Local
       PARAMETER (MAXTRY=100)
       PARAMETER (MAXPRTS=20)
       PARAMETER (NDIM=4)
+      DOUBLE PRECISION WFRAW(NDIM),PSPEC(NDIM)
       DOUBLE PRECISION W2F, W2TRY(0:MAXTRY), PSUM(NDIM), W2RAW, WRAW
       DOUBLE PRECISION ASCALE(MAXTRY), ASCLFL
       DOUBLE PRECISION S2SUM 
@@ -131,9 +132,18 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
                IF (NPRTNS.GT.MAXPRTS) 
      &              STOP('DEUTFIX: FATAL ERROR. Too many partons')
                INDXP(NPRTNS)=ITRK
-               DO IDIM=1,NDIM
-                     PSUM(IDIM)=PSUM(IDIM)+P(ITRK,IDIM)
-               ENDDO
+               
+               IF( INDXP(NPRTNS) .EQ. SINDEX ) THEN
+                    WRITE (*,*) 'DEUTFIX: spectator new PSEC'
+                    DO IDIM=1,NDIM
+                       PSPEC(IDIM)=P(ITRK,IDIM)
+                 ENDDO
+               ELSE
+                 DO IDIM=1,NDIM
+                       PSUM(IDIM)=PSUM(IDIM)+P(ITRK,IDIM)
+                 ENDDO
+               ENDIF
+            
             ENDIF
          ENDIF
       ENDDO
@@ -142,9 +152,19 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
       IF (NPRTNS.LT.2)
      &     STOP "ERROR! BAD EVENT CONFIG. Fewer than two particles"
 
+
       W2RAW = (PSUM(4)-PSUM(3))*(PSUM(4)+PSUM(3))-PSUM(1)**2-PSUM(2)**2
       WRAW = SQRT(W2RAW)
-      W2F = 2.0D0*MDEUT*NU + MDEUT*MDEUT - Q2
+
+C     Make New WFRAW without spectator
+      WFRAW(1) = 0.0D0 - PSPEC(1)
+      WFRAW(2) = 0.0D0 - PSPEC(2)
+      WFRAW(3) = SQRT(NU**2+Q2**2) - PSPEC(3)
+      WFRAW(4) = NU+MDEUT - PSPEC(4)
+
+C     W2F = 2.0D0*MDEUT*NU + MDEUT*MDEUT - Q2
+      W2F=WFRAW(4)**2-WFRAW(3)**2-WFRAW(2)**2-WFRAW(1)**2
+      
       IF (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) THEN
          WRITE(*,*) 'W^mu_full (correct): {0, 0, ', SQRT(NU*NU+Q2),';',
      &        NU+MDEUT,'}'
@@ -162,11 +182,17 @@ C     Step 1: Boost into hadronic rest frame and calculate S2SUM,PSUM
       DO ITRK=1,NPRTNS
          INDEX = INDXP(ITRK)
          CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
-         S2SUM = S2SUM + 
+         
+         IF( INDEX .EQ. SINDEX ) THEN
+            WRITE (*,*) 'DEUTFIX: spectator DO NOT COUNT'
+         ELSE
+           S2SUM = S2SUM + 
      &        (P(INDEX,4)-P(INDEX,5))*(ONE+P(INDEX,5)/P(INDEX,4))
-         DO IDIM=1,NDIM
-            PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
-         ENDDO
+           DO IDIM=1,NDIM
+              PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
+           ENDDO
+         ENDIF
+           
       ENDDO
 
       IF (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) THEN
