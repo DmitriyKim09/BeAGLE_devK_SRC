@@ -99,7 +99,7 @@ C Local
       PARAMETER (MAXTRY=10)
       PARAMETER (MAXPRTS=20)
       PARAMETER (NDIM=4)
-      DOUBLE PRECISION WFRAW(NDIM),PSPEC(NDIM),QZ2
+      DOUBLE PRECISION WFRAW(NDIM),PSPEC(NDIM),QZ2,W2SPEC
       DOUBLE PRECISION W2F, W2TRY(0:MAXTRY), PSUM(NDIM), W2RAW, WRAW
       DOUBLE PRECISION ASCALE(MAXTRY), ASCLFL
       DOUBLE PRECISION S2SUM 
@@ -155,7 +155,9 @@ C     Identify the stable particles and assemble W^mu_oops (PSUM)
       W2RAW = (PSUM(4)-PSUM(3))*(PSUM(4)+PSUM(3))-PSUM(1)**2-PSUM(2)**2
       WRAW = SQRT(W2RAW)
       W2F = 2.0D0*MDEUT*NU + MDEUT*MDEUT - Q2
-      
+      W2SPEC=(PSPEC(4)-PSPEC(3))*(PSPEC(4)+PSPEC(3))
+     & -PSPEC(1)**2-PSPEC(2)**2
+
       IF (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) THEN
          WRITE(*,*) 'W^mu_full (correct): {0, 0, ', SQRT(NU*NU+Q2),';',
      &        NU+MDEUT,'}'
@@ -169,15 +171,23 @@ C     Step 1: Boost into hadronic rest frame and calculate S2SUM,PSUM
       S2SUM = ZERO
       DO IDIM=1,NDIM
          PSUM(IDIM)=ZERO        ! sum p^mu for all stable except e'
+         PSPEC(IDIM)=ZERO       
       ENDDO
       DO ITRK=1,NPRTNS
          INDEX = INDXP(ITRK)
          CALL PYROBO(INDEX, INDEX, ZERO, ZERO, ZERO, ZERO, BETAZ)
-         S2SUM = S2SUM + 
+         IF( INDXP(NPRTNS) .EQ. SINDEX ) THEN
+            WRITE (*,*) 'Spectator in new frame j+p'
+            DO IDIM=1,NDIM
+              PSPEC(IDIM)=P(INDEX,IDIM)
+            ENDDO
+         ELSE
+           S2SUM = S2SUM + 
      &      (P(INDEX,4)-P(INDEX,5))*(ONE+P(INDEX,5)/P(INDEX,4))
-         DO IDIM=1,NDIM
-            PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
-         ENDDO
+           DO IDIM=1,NDIM
+              PSUM(IDIM)=PSUM(IDIM)+P(INDEX,IDIM)
+           ENDDO
+        ENDIF
       ENDDO
 
       IF (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) THEN
@@ -200,7 +210,7 @@ C     - find the spectator
 C     - then scale everything else until the right W
 
       NSCLTR=0
-      W2TRY(NSCLTR) = PSUM(4)*PSUM(4)
+      W2TRY(NSCLTR) = PSUM(4)*PSUM(4) + W2SPEC
       DO WHILE (NSCLTR.LT.MAXTRY .AND.
      &     ABS(W2TRY(NSCLTR)/W2F-ONE).GT.EPSPF)
          NSCLTR=NSCLTR+1
@@ -227,7 +237,7 @@ C     Zero out our sums. 3-momentum sum should be zero now.
             S2SUM = S2SUM + (P(INDEX,4)-P(INDEX,5))
      &           *(ONE+P(INDEX,5)/P(INDEX,4))
          ENDDO
-         W2TRY(NSCLTR) = PSUM(4)*PSUM(4)
+         W2TRY(NSCLTR) = PSUM(4)*PSUM(4) + W2SPEC
       
          IF ( (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) .OR.
      &        (IOULEV(4).GE.1 .AND. NSCLTR.GT.MAXTRY-3) ) then
@@ -294,8 +304,7 @@ C         USER3=DBLE(NPRTNS)
       ENDIF
 
 C     Step 3: Boost back into the ion rest frame and calculate PSUM
-      QZ2 = (SQRT(NU**2+Q2**2)-PSPEC(3))**2
-      BETAZ = ONE/SQRT(ONE + W2TRY(NSCLTR)/QZ2 )
+      BETAZ = ONE/SQRT(ONE + W2TRY(NSCLTR)/(NU**2+Q2**2) )
       DO IDIM=1,NDIM
          PSUM(IDIM)=ZERO        ! sum p^mu for all stable except e'
       ENDDO
