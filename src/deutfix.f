@@ -99,7 +99,7 @@ C Local
       PARAMETER (MAXTRY=100)
       PARAMETER (MAXPRTS=20)
       PARAMETER (NDIM=4)
-      DOUBLE PRECISION WFRAW(NDIM),PSPEC(NDIM)
+      DOUBLE PRECISION WFRAW(NDIM),PSPEC(NDIM), QZ2
       DOUBLE PRECISION W2F, W2TRY(0:MAXTRY), PSUM(NDIM), W2RAW, WRAW
       DOUBLE PRECISION ASCALE(MAXTRY), ASCLFL
       DOUBLE PRECISION S2SUM 
@@ -309,8 +309,8 @@ C         USER3=DBLE(NPRTNS)
       ENDIF
 
 C     Step 3: Boost back into the ion rest frame and calculate PSUM
-      BETAZ = ONE/SQRT(ONE + W2TRY(NSCLTR)/
-     & (SQRT(NU**2+Q2**2) - PSPEC(3))**2))
+      QZ2 = (SQRT(NU**2+Q2**2)-PSPEC(3))**2
+      BETAZ = ONE/SQRT(ONE + W2TRY(NSCLTR)/QZ2 )
       DO IDIM=1,NDIM
          PSUM(IDIM)=ZERO        ! sum p^mu for all stable except e'
       ENDDO
