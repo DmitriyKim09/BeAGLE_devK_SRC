@@ -239,7 +239,7 @@ C     Zero out our sums. 3-momentum sum should be zero now.
             S2SUM = S2SUM + (P(INDEX,4)-P(INDEX,5))
      &           *(ONE+P(INDEX,5)/P(INDEX,4))
          ENDDO
-         S2SUM = S2SUM + (PSEC(1)**2+PSEC(2)**2+PSEC(3)**2)/PSEC(4)
+         S2SUM = S2SUM + (PSPEC(1)**2+PSPEC(2)**2+PSPEC(3)**2)/PSPEC(4)
          W2TRY(NSCLTR) = PSUM(4)*PSUM(4) + W2SPEC
       
          IF ( (IOULEV(4).GE.2 .AND. NEVENT.LE.IOULEV(5)) .OR.
