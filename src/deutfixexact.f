@@ -98,32 +98,32 @@ C     a quick and dirty way of getting struck mass
       IF( MSPEC < 0.939D0 ) THEN
         MSTRU = 0.93957D0
       ELSE
-        MSTRU = 0.93827
+        MSTRU = 0.93827D0
       ENDIF
 
       QZKZ = SQRT(NU**2+Q2)-PSPEC(3)
       NUMN = NU - PSPEC(4)
 
 C     Initialize px,py,jx,jy
-      PX = 0D0
-      PY = 0D0
-      JX = 0D0
-      JY = 0D0
+      PX = 0.0D0
+      PY = 0.0D0
+      JX = 0.0D0
+      JY = 0.0D0
 
       DO JTRK=1,NPRTNS
-        IF( ABS(PPL(JTRK,5)-MJ) .LT. 1.0D-3 ) THEN
+        IF( ABS(PPL(JTRK,5)-MJ) .LT. 0.0001D0 ) THEN
           JX = PPL(JTRK,1)
           JY = PPL(JTRK,2)
           JNDEX = JTRK
         ENDIF
-        IF( ABS(PPL(JTRK,5)-MSTRU) .LT. 1.0D-3 ) THEN
+        IF( ABS(PPL(JTRK,5)-MSTRU) .LT. 0.0001D0 ) THEN
           PX = PPL(JTRK,1)
           PY = PPL(JTRK,2)
           PNDEX = JTRK
         ENDIF
       ENDDO
       
-      IF( (PX .EQ. 0D0) .OR. (JX .EQ. 0D0) )
+      IF( (PX .EQ. 0.0D0) .OR. (JX .EQ. 0.0D0) )
      &   STOP "No struck nucelon or no jpsi" 
 
 C     solution for struck nucleon z momentum
